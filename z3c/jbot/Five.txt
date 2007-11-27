@@ -1,0 +1,37 @@
+Five compatibility tests
+========================
+
+Let's instantiate a Five page template.
+
+  >>> from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+
+  >>> import z3c.jbot.tests
+  >>> directory = z3c.jbot.tests.__path__[0] + "/templates"
+
+To play nicely we'll put the template inside a view.
+  
+  >>> from Products.Five.browser import BrowserView
+  >>> class MockView(BrowserView):
+  ...     template = ZopeTwoPageTemplateFile("example.pt", _prefix=directory)
+
+Let's instantiate the view with a test request.
+  
+  >>> from zope.publisher.browser import TestRequest
+  >>> request = TestRequest("en")  
+  >>> view = MockView(None, request)
+
+Verify that the original template is rendered.
+  
+  >>> view.template()
+  u'This is an example page template.\n'
+
+Register template overrides directory.
+  
+  >>> import z3c.jbot.manager
+  >>> manager = z3c.jbot.manager.getGlobalTemplateManager()
+  >>> manager.registerDirectory(directory)
+
+Verify that the override is rendered.
+  
+  >>> view.template()
+  u'This template will override the example template.\n'
