@@ -64,7 +64,9 @@ class GlobalTemplateManager(object):
             # save template and registry and assign path
             template.filename = path
             self.templates[template] = filename
-            
+
+        template._v_last_read = False
+        
 GlobalTemplateManager = GlobalTemplateManager()
 
 def getGlobalTemplateManager():
