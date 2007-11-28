@@ -2,9 +2,10 @@ import manager
 from zope.pagetemplate.pagetemplatefile import PageTemplate
 
 # add registration hook to ``zope.app.pagetemplate``
-pt_render = PageTemplate.pt_render
-def patched_pt_render(self, *args, **kwargs):
-    manager.getGlobalTemplateManager().registerTemplate(self)
-    return pt_render(self, *args, **kwargs)
+def jbot(pt_render):
+    def render(self, *args, **kwargs): 
+        manager.getGlobalTemplateManager().registerTemplate(self)
+        return pt_render(self, *args, **kwargs)        
+    return render
 
-PageTemplate.pt_render = patched_pt_render
+PageTemplate.pt_render = jbot(PageTemplate.pt_render)
