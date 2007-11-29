@@ -1,7 +1,7 @@
 import sys
 import os.path
 
-import zope.thread
+import threading
 
 def root_length(a, b):
     if b.startswith(a):
@@ -23,7 +23,7 @@ def find_package(path):
 
     return path
     
-class GlobalTemplateManager(zope.thread.local):
+class GlobalTemplateManager(threading.local):
     def __init__(self):
         self.templates = {}
         self.paths = {}
