@@ -18,6 +18,7 @@ def find_package(syspaths, path):
 
     syspath = _syspaths[0]
     
+    path = os.path.normpath(path)
     if not path.startswith(syspath):
         return None
     
