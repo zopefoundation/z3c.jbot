@@ -1,11 +1,18 @@
 import manager
-from zope.pagetemplate.pagetemplatefile import PageTemplate
+from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
 # add registration hook to ``zope.app.pagetemplate``
-def jbot(pt_render):
-    def render(self, *args, **kwargs): 
+def jbot(func):
+    def jbot_func(self, *args, **kwargs): 
         manager.getGlobalTemplateManager().registerTemplate(self)
-        return pt_render(self, *args, **kwargs)        
-    return render
+        return func(self, *args, **kwargs)        
+    return jbot_func
 
-PageTemplate.pt_render = jbot(PageTemplate.pt_render)
+PageTemplateFile._cook_check = jbot(PageTemplateFile._cook_check)
+try:
+    from Products.PageTemplates.PageTemplateFile import PageTemplateFile as Z2PageTemplateFile
+    Z2PageTemplateFile._cook_check = jbot(Z2PageTemplateFile._cook_check)
+except ImportError:
+    raise
+
+
