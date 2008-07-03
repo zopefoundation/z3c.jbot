@@ -13,6 +13,6 @@ try:
     from Products.PageTemplates.PageTemplateFile import PageTemplateFile as Z2PageTemplateFile
     Z2PageTemplateFile._cook_check = jbot(Z2PageTemplateFile._cook_check)
 except ImportError:
-    raise
+    pass
 
 
