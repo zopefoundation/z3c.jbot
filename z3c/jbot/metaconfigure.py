@@ -11,7 +11,7 @@ def handler(directory, layer):
     factory = gsm.adapters.lookup((layer,), interfaces.ITemplateManager)
 
     if factory is None:
-        factory = TemplateManagerFactory()
+        factory = manager.TemplateManagerFactory()
         component.provideAdapter(factory, (layer,), interfaces.ITemplateManager)
 
     factory.manager.registerDirectory(directory)
