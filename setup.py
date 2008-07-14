@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1.6dev'
+version = '0.2dev'
 
 setup(name='z3c.jbot',
       version=version,
@@ -27,6 +27,9 @@ setup(name='z3c.jbot',
           'zope.pagetemplate',
           'zope.component',
           'zope.configuration',
+          'zope.security',
+          'zope.publisher',
+          'zope.app.component',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

@@ -9,6 +9,9 @@ use to provide a replacement in your own package. Simply register a
 template overrides directory and give your new template the canonical
 filename.
 
+Overrides may be registered for a specific request-layer.
+
+
 Canonical filename
 ------------------
 
@@ -21,16 +24,25 @@ Example:
   Suppose you want to override: /plone/app/layout/viewlets/logo.pt
   You would use the filename:   plone.app.layout.viewlets.logo.pt
 
+
 Registering a on overrides directory
 ------------------------------------
 
 In python:
 
-  >>> from z3c.jbot.manager import getGlobalTemplateManager
-  >>> getGlobalTemplateManager().registerDirectory(directory)
+  >>> from z3c.jbot.utility import getManager
+  >>> getManager().registerDirectory(directory)
 
-In ZCML:
+Using ZCML:
 
   <include package="z3c.jbot" file="meta.zcml" />
-  <browser:templateOverrides directory="<directory>" />
   
+  <browser:templateOverrides
+      directory="<directory>"
+      layer="<layer>" />
+  
+
+Author
+------
+
+Malthe Borch <mborch@gmail.com>

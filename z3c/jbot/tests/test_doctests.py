@@ -1,15 +1,19 @@
+import zope.interface
+import zope.component
 import zope.testing
 import unittest
 
-OPTIONFLAGS = (zope.testing.doctest.REPORT_ONLY_FIRST_FAILURE |
-               zope.testing.doctest.ELLIPSIS |
+OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
                zope.testing.doctest.NORMALIZE_WHITESPACE)
 
 import zope.component.testing
 
 def test_suite():
     doctests = ['README.txt']
-
+    globs = dict(
+        interface=zope.interface,
+        component=zope.component)
+    
     try:
         import Products.Five
         doctests.append('Five.txt')
@@ -21,6 +25,7 @@ def test_suite():
                                           optionflags=OPTIONFLAGS,
                                           setUp=zope.component.testing.setUp,
                                           tearDown=zope.component.testing.tearDown,
+                                          globs=globs,
                                           package="z3c.jbot") for doctest in doctests
         ))
 
