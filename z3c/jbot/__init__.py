@@ -67,7 +67,7 @@ def jbot(func):
         return func(self, *args, **kwargs)        
     return patch
 
-logger.info("Patching page template classes...")
+logger.info("Patching page template classes for use with z3c.jbot...")
 
 # patch ``_cook_check``-method to insert jbot-logic
 for pt_class in PT_CLASSES:
