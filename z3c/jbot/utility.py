@@ -18,18 +18,18 @@ except ImportError:
 def getRequest():
     try:
         i = zope.security.management.getInteraction()
+        for p in i.participations:
+            if IRequest.providedBy(p):
+                return p
     except zope.security.interfaces.NoInteraction:
-        if ZOPE_2:
-            # get request by acquisition
-            site = getSite()
-            if site is not None:
-                return site.REQUEST
-        return
-
-    for p in i.participations:
-        if IRequest.providedBy(p):
-            return p
-
+        pass
+    
+    if ZOPE_2:
+        # get request by acquisition
+        site = getSite()
+        if site is not None:
+            return site.REQUEST
+    
 def getLayer():
     request = getRequest()
 
