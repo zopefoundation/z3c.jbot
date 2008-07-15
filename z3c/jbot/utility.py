@@ -10,26 +10,27 @@ import zope.security.interfaces
 import interfaces
 
 try:
-    import Products.PageTemplates
+    import Acquisition
     ZOPE_2 = True
-except ImportError:
+except:
     ZOPE_2 = False
 
 def getRequest():
-    try:
-        i = zope.security.management.getInteraction()
-        for p in i.participations:
-            if IRequest.providedBy(p):
-                return p
-    except zope.security.interfaces.NoInteraction:
-        pass
-    
     if ZOPE_2:
         # get request by acquisition
         site = getSite()
         if site is not None:
             return site.REQUEST
-    
+
+    try:
+        i = zope.security.management.getInteraction()
+    except zope.security.interfaces.NoInteraction:
+        return
+
+    for p in i.participations:
+        if IRequest.providedBy(p):
+            return p
+
 def getLayer():
     request = getRequest()
 
@@ -38,10 +39,9 @@ def getLayer():
 
     return interface.Interface
 
-def getManager():
+def getManagers():
     layer = getLayer()
     gsm = component.getGlobalSiteManager()
         
-    factory = gsm.adapters.lookup((layer,), interfaces.ITemplateManager)
-    if factory is not None:
-        return factory.manager
+    for name, factory in gsm.adapters.lookupAll((layer,), interfaces.ITemplateManager):
+        yield factory(layer)

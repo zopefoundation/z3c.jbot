@@ -49,7 +49,8 @@ Register override for HTTP-request layer.
   >>> from zope.publisher.interfaces.browser import IHTTPRequest
   >>> factory = z3c.jbot.manager.TemplateManagerFactory()
   >>> component.provideAdapter(
-  ...     factory, (IHTTPRequest,), z3c.jbot.interfaces.ITemplateManager)
+  ...     factory, (IHTTPRequest,),
+  ...     z3c.jbot.interfaces.ITemplateManager, name='http')
 
   >>> manager = factory.manager
   >>> manager.registerDirectory(directory)
@@ -74,9 +75,10 @@ Examine the request.
   >>> import z3c.jbot.utility
   >>> z3c.jbot.utility.getRequest()
   <zope.publisher.browser.TestRequest ...>
-  
-  >>> z3c.jbot.utility.getManager() is manager
-  True
+
+  >>> managers = tuple(z3c.jbot.utility.getManagers())
+  >>> len(managers)
+  2
 
 Verify that template attributes are set per request layer.
 

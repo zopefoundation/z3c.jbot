@@ -1,13 +1,17 @@
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
-import manager
 import utility
+import logging
+
+logger = logging.getLogger('jbot')
 
 PT_CLASSES = [PageTemplateFile]
 
-if utility.ZOPE_2:
+try:
     import Products.PageTemplates.PageTemplateFile
     PT_CLASSES.append(Products.PageTemplates.PageTemplateFile.PageTemplateFile)
+except:
+    pass
 
 class LayerProperty(property):
     """Layer-specific property class.
@@ -54,18 +58,23 @@ class LayerProperty(property):
 # registration hook to template manager
 def jbot(func):
     def patch(self, *args, **kwargs):
-        manager = utility.getManager()
-        if manager is not None:
-            manager.registerTemplate(self)
-        
+        for manager in utility.getManagers():
+            # register template; this call returns ``True`` if
+            # template was invalidated
+            if manager.registerTemplate(self):
+                break
+            
         return func(self, *args, **kwargs)        
     return patch
 
+logger.info("Patching page template classes...")
+
+# patch ``_cook_check``-method to insert jbot-logic
 for pt_class in PT_CLASSES:
-    # patch ``_cook_check``-method to insert jbot-logic
     pt_class._cook_check = jbot(pt_class._cook_check)
 
-    # munge per-layer attribute descriptors on class
+# munge per-layer attribute descriptors on class
+for pt_class in PT_CLASSES:
     for name in ('_v_macros', '_v_program', '_v_cooked', '_v_errors',
                  '_v_last_read', '_v_warning', '_text_',
                  'filename', 'content_type', 'is_html'):

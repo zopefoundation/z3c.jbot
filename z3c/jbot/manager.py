@@ -1,8 +1,9 @@
 from zope import interface
 
+import os
 import sys
-import os.path
 
+import utility
 import interfaces
 
 IGNORE = object()
@@ -70,8 +71,9 @@ class TemplateManager(object):
                 del self.paths[filename]
 
         for template in templates:
-            template._v_last_read = False
-        
+            self.registerTemplate(template)
+            del self.templates[template]
+            
     def registerTemplate(self, template):
         # only register templates that have a filename attribute
         if not hasattr(template, 'filename'):
@@ -116,3 +118,5 @@ class TemplateManager(object):
 
         # force cook
         template._v_last_read = False
+
+        return True
