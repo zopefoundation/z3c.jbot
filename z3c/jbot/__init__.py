@@ -4,6 +4,11 @@ import manager
 import utility
 
 NO_DEFAULT = object()
+PT_CLASSES = [PageTemplateFile]
+
+if utility.ZOPE_2:
+    from Products.PageTemplates.PageTemplateFile import PageTemplateFile as Z2PageTemplateFile
+    PT_CLASSES.append(Z2PageTemplateFile)
 
 class LayerProperty(property):
     """Layer-specific property class.
@@ -42,15 +47,11 @@ def jbot(func):
         return func(self, *args, **kwargs)        
     return patch
 
-# patch ``_cook_check``-method to insert jbot-logic
-PageTemplateFile._cook_check = jbot(PageTemplateFile._cook_check)
-try:
-    from Products.PageTemplates.PageTemplateFile import PageTemplateFile as Z2PageTemplateFile
-    Z2PageTemplateFile._cook_check = jbot(Z2PageTemplateFile._cook_check)
-except ImportError:
-    pass
+for pt_class in PT_CLASSES:
+    # patch ``_cook_check``-method to insert jbot-logic
+    pt_class._cook_check = jbot(pt_class._cook_check)
 
-# munge per-layer attribute descriptors on class
-for name in ('_v_macros', '_v_program', '_v_cooked', '_v_errors',
-             '_v_last_read', '_v_warning', '_text_', 'filename'):
-    setattr(PageTemplateFile, name, LayerProperty(name))
+    # munge per-layer attribute descriptors on class
+    for name in ('_v_macros', '_v_program', '_v_cooked', '_v_errors',
+                 '_v_last_read', '_v_warning', '_text_', 'filename'):
+        setattr(pt_class, name, LayerProperty(name))
