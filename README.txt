@@ -42,7 +42,7 @@ Performance considerations
 --------------------------
 
 The use of jbot adds to the general page load time. On a site with
-many templates this may be as much as 25 ms per request (a 9% increase
+many templates this may be as much as 20 ms per request (a 7% increase
 on my machine).
 
       
