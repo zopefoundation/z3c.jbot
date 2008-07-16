@@ -1,7 +1,9 @@
+from zope import interface
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
 import utility
 import logging
+import threading
 
 logger = logging.getLogger('jbot')
 
@@ -36,7 +38,7 @@ class LayerProperty(property):
         
     def _get(self, template):
         key = self.name
-        layer = utility.getLayer()
+        layer = getattr(template._v_cache, 'layer', None)
         attrs = getattr(template, '_v_attrs', template.__dict__)
         if (layer, key) in attrs:
             return attrs[layer, key]
@@ -44,7 +46,7 @@ class LayerProperty(property):
     
     def _set(self, template, value):
         key = self.name
-        layer = utility.getLayer()
+        layer = getattr(template._v_cache, 'layer', None)
         attrs = template.__dict__.get('_v_attrs')
         if attrs is None:
             attrs = template._v_attrs = {}
@@ -58,12 +60,15 @@ class LayerProperty(property):
 # registration hook to template manager
 def jbot(func):
     def patch(self, *args, **kwargs):
+        # set layer
+        self._v_cache.layer = utility.getLayer()
+
         for manager in utility.getManagers():
             # register template; this call returns ``True`` if
             # template was invalidated
             if manager.registerTemplate(self):
                 break
-            
+        
         return func(self, *args, **kwargs)        
     return patch
 
@@ -79,3 +84,5 @@ for pt_class in PT_CLASSES:
                  '_v_last_read', '_v_warning', '_text_',
                  'filename', 'content_type', 'is_html'):
         setattr(pt_class, name, LayerProperty(pt_class, name))
+
+    setattr(pt_class, '_v_cache', threading.local())

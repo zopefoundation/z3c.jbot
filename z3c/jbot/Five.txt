@@ -97,6 +97,7 @@ No longer providing this layer, we expect an attribute lookup to
 return the value that was set before the layer was provided.
   
   >>> interface.noLongerProvides(MockSite.REQUEST, ISpecificLayer)
+  >>> view.template._v_cache.layer = z3c.jbot.utility.getLayer()
   >>> view.template._v_last_read is not False
   True  
   
