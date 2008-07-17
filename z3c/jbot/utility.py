@@ -20,8 +20,11 @@ def getRequest():
         # get request by acquisition
         site = getSite()
         if site is not None:
-            return site.REQUEST
-
+            try:
+                return site.request
+            except AttributeError:
+                return site.REQUEST
+            
     try:
         i = zope.security.management.getInteraction()
     except zope.security.interfaces.NoInteraction:
