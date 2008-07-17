@@ -14,12 +14,15 @@ def root_length(a, b):
     else:
         return 0
 
+def sort_by_path(path, paths):
+    return sorted(
+        paths, key=lambda syspath: root_length(syspath, path), reverse=True)
+
 def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
     path is part of a Product."""
-    _syspaths = sorted(
-                sys.modules["Products"].__path__,
-                key=lambda syspath: root_length(syspath, path), reverse=True)
+    
+    _syspaths = sort_by_path(path, sys.modules["Products"].__path__)
     syspath = _syspaths[0]
 
     if not path.startswith(syspath):
@@ -34,9 +37,7 @@ def find_package(syspaths, path):
     """Determine the Python-package where path is located.  If the path is
     not located within the Python sys-path, return ``None``."""
 
-    _syspaths = sorted(
-        syspaths, key=lambda syspath: root_length(syspath, path), reverse=True)
-
+    _syspaths = sort_by_path(path, syspaths)
     syspath = _syspaths[0]
     
     path = os.path.normpath(path)
