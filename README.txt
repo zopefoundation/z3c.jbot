@@ -21,6 +21,7 @@ replaced with dots.
 Example:
 
   Suppose you want to override: /plone/app/layout/viewlets/logo.pt
+
   You would use the filename:   plone.app.layout.viewlets.logo.pt
 
 Registering a on overrides directory
