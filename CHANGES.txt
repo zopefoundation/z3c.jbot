@@ -1,7 +1,8 @@
 Changes
 =======
 
-In next release...
+0.3 (2009-09-26)
+----------------
 
 - Improved test coverage.
 
