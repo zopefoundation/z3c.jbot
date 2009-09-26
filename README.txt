@@ -1,5 +1,5 @@
 Overview
---------
+========
 
 The z3c.jbot (or "Just a bunch of templates") package allows drop-in
 page template overrides.
@@ -10,7 +10,6 @@ template overrides directory and give your new template the canonical
 filename.
 
 Overrides may be registered for a specific layer or any layer.
-
 
 Canonical filename
 ------------------
@@ -24,28 +23,24 @@ Example:
   Suppose you want to override: /plone/app/layout/viewlets/logo.pt
   You would use the filename:   plone.app.layout.viewlets.logo.pt
 
-
 Registering a on overrides directory
 ------------------------------------
 
 A Zope component configuration directive is available to configure
-overrides.
+overrides::
 
   <include package="z3c.jbot" file="meta.zcml" />
-  
+
   <browser:templateOverrides
       directory="<directory>"
       layer="<layer>" />
-  
 
 Performance considerations
 --------------------------
 
 The use of jbot adds to the general page load time. On a site with
-many templates this may be as much as 20 ms per request (a 7% increase
-on my machine).
+many templates this may be as much as 10 ms per request.
 
-      
 Author
 ------
 

@@ -7,6 +7,7 @@ import utility
 import interfaces
 
 IGNORE = object()
+DELETE = object()
 
 def root_length(a, b):
     if b.startswith(a):
@@ -21,7 +22,7 @@ def sort_by_path(path, paths):
 def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
     path is part of a Product."""
-    
+
     _syspaths = sort_by_path(path, sys.modules["Products"].__path__)
     syspath = _syspaths[0]
 
@@ -39,37 +40,41 @@ def find_package(syspaths, path):
 
     _syspaths = sort_by_path(path, syspaths)
     syspath = _syspaths[0]
-    
+
     path = os.path.normpath(path)
     if not path.startswith(syspath):
         if utility.ZOPE_2:
             return find_zope2_product(path)
         return None
-    
+
     path = path[len(syspath):]
-    
+
     # convert path to dotted filename
     if path.startswith(os.path.sep):
         path = path[1:]
-        
+
     return path
 
 class TemplateManagerFactory(object):
-    def __init__(self):
-        self.manager = TemplateManager()
+    def __init__(self, name):
+        self.manager = TemplateManager(name)
 
     def __call__(self, layer):
         return self.manager
-    
+
 class TemplateManager(object):
     interface.implements(interfaces.ITemplateManager)
-    
-    def __init__(self):
+
+    def __init__(self, name):
         self.syspaths = tuple(sys.path)
         self.templates = {}
         self.paths = {}
+        self.directories = set()
+        self.name = name
 
     def registerDirectory(self, directory):
+        self.directories.add(directory)
+
         for filename in os.listdir(directory):
             if filename.endswith('.pt'):
                 self.paths[filename] = "%s/%s" % (directory, filename)
@@ -79,8 +84,10 @@ class TemplateManager(object):
                 del self.templates[template]
 
     def unregisterDirectory(self, directory):
+        self.directories.remove(directory)
+
         templates = []
-        
+
         for template, filename in self.templates.items():
             if filename in self.paths:
                 templates.append(template)
@@ -92,12 +99,18 @@ class TemplateManager(object):
         for template in templates:
             self.registerTemplate(template)
             del self.templates[template]
-            
+            template.filename = template._filename
+            template._v_last_read = False
+
+    def unregisterAllDirectories(self):
+        for directory in tuple(self.directories):
+            self.unregisterDirectory(directory)
+
     def registerTemplate(self, template):
         # only register templates that have a filename attribute
         if not hasattr(template, 'filename'):
             return
-        
+
         # assert that the template is not already registered
         filename = self.templates.get(template)
         if filename is IGNORE:
@@ -110,18 +123,16 @@ class TemplateManager(object):
 
         # verify that override has not been unregistered
         if filename is not None and filename not in paths:
-            # restore original template
             template.filename = template._filename
-            delattr(template, '_filename')
             del self.templates[template]
-            
+
         # check if an override exists
         path = find_package(self.syspaths, template.filename)
         if path is None:
             # permanently ignore template
             self.templates[template] = IGNORE
             return
-        
+
         filename = path.replace(os.path.sep, '.')
         if filename in paths:
             path = paths[filename]

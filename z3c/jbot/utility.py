@@ -24,7 +24,7 @@ def getRequest():
                 return site.request
             except AttributeError:
                 return site.REQUEST
-            
+
     try:
         i = zope.security.management.getInteraction()
     except zope.security.interfaces.NoInteraction:
@@ -45,6 +45,6 @@ def getLayer():
 def getManagers():
     layer = getLayer()
     gsm = component.getGlobalSiteManager()
-        
+
     for name, factory in gsm.adapters.lookupAll((layer,), interfaces.ITemplateManager):
         yield factory(layer)

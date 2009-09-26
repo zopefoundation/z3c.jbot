@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.2dev'
+version = '0.3dev'
 
 setup(name='z3c.jbot',
       version=version,
       description="Drop-in template overrides.",
-      long_description=open("README.txt").read(),
+      long_description=open("README.txt").read() + open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Zope2",
         "Framework :: Zope3",

@@ -1,0 +1,20 @@
+Changes
+=======
+
+In next release...
+
+- Improved test coverage.
+
+- Refactored code, improving performance.
+
+- Fixed issue with multiple layers.
+
+0.2 (2008-07-14)
+----------------
+
+- Added layer support.
+
+0.1 (2007-11-27)
+----------------
+
+- Initial public release.
