@@ -76,8 +76,7 @@ class TemplateManager(object):
         self.directories.add(directory)
 
         for filename in os.listdir(directory):
-            if filename.endswith('.pt'):
-                self.paths[filename] = "%s/%s" % (directory, filename)
+            self.paths[filename] = "%s/%s" % (directory, filename)
 
         for template, filename in self.templates.items():
             if filename is IGNORE:
@@ -101,7 +100,6 @@ class TemplateManager(object):
             self.registerTemplate(inst, template)
             del self.templates[template]
             inst.filename = inst._filename
-            inst._v_last_read = False
 
     def unregisterAllDirectories(self):
         for directory in tuple(self.directories):
@@ -131,20 +129,17 @@ class TemplateManager(object):
             return
 
         filename = path.replace(os.path.sep, '.')
-        if filename in paths:
-            path = paths[filename]
-
-            # save original filename
-            template._filename = template.filename
-
-            # save template and registry and assign path
-            template.filename = path
-            self.templates[token] = filename
-        else:
+        if filename not in paths:
             self.templates[token] = IGNORE
-            return False
+            return
 
-        # force cook
-        template._v_last_read = False
+        path = paths[filename]
+
+        # save original filename
+        template._filename = template.filename
+
+        # save template and registry and assign path
+        template.filename = path
+        self.templates[token] = filename
 
         return True
