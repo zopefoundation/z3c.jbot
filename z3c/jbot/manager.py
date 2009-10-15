@@ -142,6 +142,7 @@ class TemplateManager(object):
             self.templates[token] = filename
         else:
             self.templates[token] = IGNORE
+            return False
 
         # force cook
         template._v_last_read = False

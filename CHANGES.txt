@@ -3,6 +3,8 @@ Changes
 
 In next release...
 
+- Added Chameleon-support.
+
 - Reimplemented override logic; the total usage cost is now reduced to
   an insignificant amount. Meanwhile, only templates that are defined
   as class-attributes (e.g. on views, viewlets and portlets) can be
