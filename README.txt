@@ -33,8 +33,7 @@ use with jbot using a ZCML-directive::
 Use of this package adds a small (2-3 ms per request on Plone) to the
 total application response time.
 
-.. [#] To enable Chameleon on Zope 2, use the ``five.pt`` package
-(CMF-apps like Plone should use ``cmf.pt`` which adds full support).
+.. [#] To enable Chameleon on Zope 2, use the ``five.pt`` package (CMF-apps like Plone should use ``cmf.pt`` which adds full support).
 
 Author
 ------
