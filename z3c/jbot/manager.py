@@ -97,22 +97,19 @@ class TemplateManager(object):
                 del self.paths[filename]
 
         for template in templates:
-            self.registerTemplate(template)
+            inst = template.__get__(self)
+            self.registerTemplate(inst, template)
             del self.templates[template]
-            template.filename = template._filename
-            template._v_last_read = False
+            inst.filename = inst._filename
+            inst._v_last_read = False
 
     def unregisterAllDirectories(self):
         for directory in tuple(self.directories):
             self.unregisterDirectory(directory)
 
-    def registerTemplate(self, template):
-        # only register templates that have a filename attribute
-        if not hasattr(template, 'filename'):
-            return
-
+    def registerTemplate(self, template, token):
         # assert that the template is not already registered
-        filename = self.templates.get(template)
+        filename = self.templates.get(token)
         if filename is IGNORE:
             return
 
@@ -124,13 +121,13 @@ class TemplateManager(object):
         # verify that override has not been unregistered
         if filename is not None and filename not in paths:
             template.filename = template._filename
-            del self.templates[template]
+            del self.templates[token]
 
         # check if an override exists
         path = find_package(self.syspaths, template.filename)
         if path is None:
             # permanently ignore template
-            self.templates[template] = IGNORE
+            self.templates[token] = IGNORE
             return
 
         filename = path.replace(os.path.sep, '.')
@@ -142,9 +139,9 @@ class TemplateManager(object):
 
             # save template and registry and assign path
             template.filename = path
-            self.templates[template] = filename
+            self.templates[token] = filename
         else:
-            self.templates[template] = IGNORE
+            self.templates[token] = IGNORE
 
         # force cook
         template._v_last_read = False

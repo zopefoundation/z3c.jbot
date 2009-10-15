@@ -1,6 +1,13 @@
 Changes
 =======
 
+In next release...
+
+- Reimplemented override logic; the total usage cost is now reduced to
+  an insignificant amount. Meanwhile, only templates that are defined
+  as class-attributes (e.g. on views, viewlets and portlets) can be
+  overriden.
+
 0.3 (2009-09-26)
 ----------------
 
