@@ -36,7 +36,7 @@ def get(template, view=None, cls=None):
             inst._v_last_read = False
             break
 
-    if view is not None:
+    if view is not None and IAcquirer is not None:
         if IAcquirer.providedBy(inst):
             return inst.__of__(view)
 
