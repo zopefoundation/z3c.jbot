@@ -1,6 +1,11 @@
 Changes
 =======
 
+In next release...
+
+- Acquisition-wrap template instance, if applicable. This fixes an
+  issue on Zope 2.10 where legacy code would break.
+
 0.5 (2009-10-16)
 ----------------
 

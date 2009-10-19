@@ -1,5 +1,10 @@
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
+try:
+    from Acquisition.interfaces import IAcquirer
+except ImportError:
+    IAcquirer = None
+
 import utility
 import logging
 
@@ -30,6 +35,10 @@ def get(template, view=None, cls=None):
         if manager.registerTemplate(inst, template):
             inst._v_last_read = False
             break
+
+    if view is not None:
+        if IAcquirer.providedBy(inst):
+            return inst.__of__(view)
 
     return inst
 
