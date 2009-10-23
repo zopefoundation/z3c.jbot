@@ -37,7 +37,7 @@ def get(template, view=None, cls=None):
             break
 
     if view is not None and IAcquirer is not None:
-        if IAcquirer.providedBy(inst):
+        if IAcquirer.providedBy(inst) and IAcquirer.providedBy(view):
             return inst.__of__(view)
 
     return inst
