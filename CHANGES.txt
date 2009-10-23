@@ -1,7 +1,8 @@
 Changes
 =======
 
-In next release...
+0.5.2 (2009-10-23)
+------------------
 
 - Fixed issue where an exception would be raised if a view was not an
   acquirer, while the context was. [gweis]
