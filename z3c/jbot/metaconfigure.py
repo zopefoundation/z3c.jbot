@@ -35,7 +35,7 @@ def handler(directory, layer):
 
 def templateOverridesDirective(_context, directory, layer=interface.Interface):
     _context.action(
-        discriminator = ('override', directory, layer),
+        discriminator = ('jbot', directory, layer),
         callable = handler,
         args = (directory, layer),
         )

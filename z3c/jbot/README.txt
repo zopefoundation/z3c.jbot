@@ -176,7 +176,7 @@ Let's try registering the directory again.
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/browser">
-  ... <templateOverrides directory="%s/overrides/interface" />
+  ... <jbot directory="%s/overrides/interface" />
   ... </configure>
   ... """ % directory))
 
@@ -204,7 +204,7 @@ Let's register overrides for the HTTP-request layer.
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/browser">
-  ... <templateOverrides
+  ... <jbot
   ...      directory="%s/overrides/http"
   ...      layer="zope.publisher.interfaces.browser.IHTTPRequest" />
   ... </configure>

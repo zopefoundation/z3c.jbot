@@ -31,7 +31,7 @@ use with jbot using a ZCML-directive::
 
   <include package="z3c.jbot" file="meta.zcml" />
 
-  <browser:templateOverrides
+  <browser:jbot
       directory="<path>"
       layer="<layer>" />
 

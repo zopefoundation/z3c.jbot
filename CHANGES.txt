@@ -1,6 +1,10 @@
 Changes
 =======
 
+In next release...
+
+- ZCML-directive is now called ``jbot``. [malthe]
+
 0.5.2 (2009-10-23)
 ------------------
 
