@@ -34,5 +34,7 @@ setup(name='z3c.jbot',
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
