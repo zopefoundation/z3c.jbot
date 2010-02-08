@@ -9,24 +9,18 @@ OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
 import zope.component.testing
 
 def test_suite():
-    doctests = ['README.txt']
     globs = dict(
         interface=zope.interface,
         component=zope.component)
-    
-    try:
-        import Products.Five
-        doctests.append('Five.txt')
-    except:
-        pass
-    
+
     return unittest.TestSuite((
-        zope.testing.doctest.DocFileSuite(doctest,
-                                          optionflags=OPTIONFLAGS,
-                                          setUp=zope.component.testing.setUp,
-                                          tearDown=zope.component.testing.tearDown,
-                                          globs=globs,
-                                          package="z3c.jbot") for doctest in doctests
+        zope.testing.doctest.DocFileSuite(
+            'README.txt',
+            optionflags=OPTIONFLAGS,
+            setUp=zope.component.testing.setUp,
+            tearDown=zope.component.testing.tearDown,
+            globs=globs,
+            package="z3c.jbot"),
         ))
 
 if __name__ == '__main__':
