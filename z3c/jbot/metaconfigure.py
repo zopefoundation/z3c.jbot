@@ -11,8 +11,8 @@ def handler(directory, layer):
     factories = set(factory for name, factory in lookup_all(
         (layer,), interfaces.ITemplateManager))
 
-    # if factory is available on the interface bases of the layer we
-    # discard it and register a new manager specialized to the layer
+    # this might yield several factories (template managers); we check
+    # if one is registered for exactly our layer
     if layer is interface.Interface:
         base_factories = set()
     else:
@@ -28,6 +28,7 @@ def handler(directory, layer):
         factory = manager.TemplateManagerFactory(name)
         component.provideAdapter(
             factory, (layer,), interfaces.ITemplateManager, name=name)
+        
 
     factory(layer).registerDirectory(directory)
 
