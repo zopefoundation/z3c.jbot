@@ -46,5 +46,6 @@ def getManagers():
     layer = getLayer()
     gsm = component.getGlobalSiteManager()
 
-    for name, factory in gsm.adapters.lookupAll((layer,), interfaces.ITemplateManager):
+    for name, factory in reversed(
+        gsm.adapters.lookupAll((layer,), interfaces.ITemplateManager)):
         yield factory(layer)
