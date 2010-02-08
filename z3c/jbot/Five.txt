@@ -30,7 +30,7 @@ Register template overrides directory.
   >>> import z3c.jbot.manager
   >>> import z3c.jbot.interfaces
   
-  >>> factory = z3c.jbot.manager.TemplateManagerFactory()
+  >>> factory = z3c.jbot.manager.TemplateManagerFactory('z3c.jbot.tests.templates')
   >>> component.provideAdapter(
   ...     factory, (interface.Interface,), z3c.jbot.interfaces.ITemplateManager)
 
@@ -47,7 +47,7 @@ Verify that the override is rendered.
 Register override for HTTP-request layer.
 
   >>> from zope.publisher.interfaces.browser import IHTTPRequest
-  >>> factory = z3c.jbot.manager.TemplateManagerFactory()
+  >>> factory = z3c.jbot.manager.TemplateManagerFactory('z3c.jbot.tests.templates')
   >>> component.provideAdapter(
   ...     factory, (IHTTPRequest,),
   ...     z3c.jbot.interfaces.ITemplateManager, name='http')
