@@ -17,7 +17,7 @@ To play nicely we'll put the template inside a view.
 Let's instantiate the view with a test request.
   
   >>> from zope.publisher.browser import TestRequest
-  >>> request = TestRequest("en")  
+  >>> request = TestRequest("en")
   >>> view = MockView(None, request)
 
 Verify that the original template is rendered.

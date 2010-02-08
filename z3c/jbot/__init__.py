@@ -10,6 +10,8 @@ import logging
 
 logger = logging.getLogger('jbot')
 
+# Standard PageTemplateFile
+
 PT_CLASSES = [PageTemplateFile]
 
 try:
@@ -42,6 +44,32 @@ def get(template, view=None, cls=None):
 
     return inst
 
+for pt_class in PT_CLASSES:
+    pt_class.__get__ = get
+    logger.info(repr(pt_class))
+
+# Zope 2.12 ViewPageTemplateFile
+
+try:
+    from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as FiveViewPageTemplateFile
+    from Products.Five.browser.pagetemplatefile import BoundPageTemplate as FiveBoundPageTemplate
+except ImportError:
+    pass
+else:
+    pt_class = FiveViewPageTemplateFile
+    bind = pt_class.__get__
+
+    def five_get_and_bind(template, view=None, cls=None):
+        inst = get(template, view, cls)
+        if inst._v_last_read is False:
+            inst.read()
+        return bind(inst, view, cls)
+
+    pt_class.__get__ = five_get_and_bind
+    logger.info(repr(pt_class))
+
+# five.pt / Chameleon
+
 try:
     import five.pt.pagetemplate
 except ImportError:
@@ -60,9 +88,7 @@ else:
     pt_class.__get__ = get_and_bind
     logger.info(repr(pt_class))
 
-for pt_class in PT_CLASSES:
-    pt_class.__get__ = get
-    logger.info(repr(pt_class))
+# CMF skin layer resources
 
 try:
     import Products.CMFCore.FSObject
