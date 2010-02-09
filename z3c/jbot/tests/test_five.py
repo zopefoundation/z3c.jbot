@@ -4,6 +4,7 @@ class FiveTests(unittest.TestCase):
     def setUp(self):
         import zope.component.testing
         zope.component.testing.setUp(self)
+        import z3c.jbot.patches
 
         from Products.Five.browser.pagetemplatefile import \
              ZopeTwoPageTemplateFile as Template

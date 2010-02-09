@@ -44,65 +44,68 @@ def get(template, view=None, cls=None):
 
     return inst
 
-for pt_class in PT_CLASSES:
-    pt_class.__get__ = get
-    logger.info(repr(pt_class))
-
-# Zope 2.12 ViewPageTemplateFile
-
-try:
-    from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as FiveViewPageTemplateFile
-    from Products.Five.browser.pagetemplatefile import BoundPageTemplate as FiveBoundPageTemplate
-except ImportError:
-    pass
-else:
-    pt_class = FiveViewPageTemplateFile
-    bind = pt_class.__get__
-
-    def five_get_and_bind(template, view=None, cls=None):
-        inst = get(template, view, cls)
-        if inst._v_last_read is False:
-            inst.read()
-        return bind(inst, view, cls)
-
-    pt_class.__get__ = five_get_and_bind
-    logger.info(repr(pt_class))
-
 # five.pt / Chameleon
-
 try:
-    import five.pt.pagetemplate
+    from five.pt.pagetemplate import ViewPageTemplateFile as \
+         pt_class
 except ImportError:
     pass
 else:
-    pt_class = five.pt.pagetemplate.ViewPageTemplateFile
-    bind = pt_class.__get__
+    five_bind = pt_class.__get__
 
     def get_and_bind(template, view=None, cls=None):
         inst = get(template, view, cls)
         if inst._v_last_read is False:
             inst.registry.purge()
             inst.read()
-        return bind(inst, view, cls)
+        return five_bind(inst, view, cls)
 
     pt_class.__get__ = get_and_bind
     logger.info(repr(pt_class))
 
-# CMF skin layer resources
+    del pt_class
 
+# Zope 2.12 ViewPageTemplateFile; note that we import
+# ``BoundPageTemplate`` to provoke an import-error on Zope 2.10.
 try:
-    import Products.CMFCore.FSObject
+    from Products.Five.browser.pagetemplatefile import \
+         ViewPageTemplateFile as pt_class
+    from Products.Five.browser.pagetemplatefile import \
+         BoundPageTemplate
 except ImportError:
     pass
 else:
-    fs_class = Products.CMFCore.FSObject.FSObject
+    zope_bind = pt_class.__get__
+
+    def five_get_and_bind(template, view=None, cls=None):
+        inst = get(template, view, cls)
+        if inst._v_last_read is False:
+            inst.read()
+        return zope_bind(inst, view, cls)
+
+    pt_class.__get__ = five_get_and_bind
+    logger.info(repr(pt_class))
+
+    del pt_class
+
+for pt_class in PT_CLASSES:
+    pt_class.__get__ = get
+    logger.info(repr(pt_class))
+
+# CMF skin layer resources
+try:
+    from Products.CMFCore.FSObject import FSObject as fs_class
+except ImportError:
+    pass
+else:
+    of = fs_class.__of__
 
     def get_skin_obj(obj, view=None, cls=None):
         layer = utility.getLayer()
         key = layer, obj
         inst = registry.get(key)
         if inst is None:
-            cls = type(obj)
+            cls = obj.__class__
             inst = registry[key] = cls.__new__(cls)
             inst.__dict__ = obj.__dict__.copy()
 
@@ -113,7 +116,7 @@ else:
                 inst._parsed = False
                 inst.getObjectFSPath()
 
-        return inst
+        return of(inst, view)
 
     def get_filename(obj, *args):
         return obj._filepath
@@ -121,7 +124,7 @@ else:
     def set_filename(obj, value, *args):
         obj._filepath = value
 
-    fs_class.__get__ = get_skin_obj
+    fs_class.__of__ = get_skin_obj
     fs_class.filename = property(get_filename, set_filename)
 
     logger.info(repr(fs_class))

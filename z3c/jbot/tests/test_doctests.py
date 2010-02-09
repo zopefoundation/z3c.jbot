@@ -8,6 +8,10 @@ OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
 
 import zope.component.testing
 
+def setUp(test):
+    zope.component.testing.setUp(test)
+    import z3c.jbot.patches
+
 def test_suite():
     globs = dict(
         interface=zope.interface,
@@ -17,7 +21,7 @@ def test_suite():
         zope.testing.doctest.DocFileSuite(
             'README.txt',
             optionflags=OPTIONFLAGS,
-            setUp=zope.component.testing.setUp,
+            setUp=setUp,
             tearDown=zope.component.testing.tearDown,
             globs=globs,
             package="z3c.jbot"),

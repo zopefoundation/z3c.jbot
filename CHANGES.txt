@@ -3,6 +3,8 @@ Changes
 
 In next release...
 
+- Zope 2.12 compatibility. [malthe]
+
 - Added support for automatic configuration. [malthe]
 
 - Fixed layer specialization ordering. [malthe]
