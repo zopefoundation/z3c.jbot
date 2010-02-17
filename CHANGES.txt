@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.6.2 (unreleased)
+0.6.2 (2010-02-17)
 ------------------
 
 - Downgrade log messages to debug level. In normal operation they don't contain
