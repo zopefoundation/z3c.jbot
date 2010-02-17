@@ -1,6 +1,11 @@
 Changes
 =======
 
+0.6.2 (unreleased)
+------------------
+
+- Prefer zope.site over zope.app.component if it is available. [hannosch]
+
 0.6.1 (2010-02-09)
 ------------------
 

@@ -25,7 +25,12 @@ class FiveTests(unittest.TestCase):
         class MockSite(object):
             REQUEST = TestRequest("en")
             getSiteManager = zope.component.getSiteManager
-        from zope.app.component.hooks import setHooks, setSite
+
+        try:
+            from zope.site.hooks import setHooks, setSite
+        except ImportError:
+            from zope.app.component.hooks import setHooks, setSite
+
         setHooks()
         setSite(MockSite())
         self._request = MockSite.REQUEST

@@ -1,7 +1,11 @@
 from zope import interface
 from zope import component
 
-from zope.app.component.hooks import getSite
+try:
+    from zope.site.hooks import getSite
+except ImportError:
+    from zope.app.component.hooks import getSite
+
 from zope.publisher.interfaces import IRequest
 
 import zope.security.management

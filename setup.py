@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys, os
 
 version = '0.6.2'
 
@@ -11,7 +10,6 @@ setup(name='z3c.jbot',
         "Framework :: Zope2",
         "Framework :: Zope3",
         "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='page template override',
       author='Malthe Borch',
@@ -29,11 +27,8 @@ setup(name='z3c.jbot',
           'zope.configuration',
           'zope.security',
           'zope.publisher',
-          'zope.app.component',
-          # -*- Extra requirements: -*-
       ],
       entry_points="""
-      # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
       """,
