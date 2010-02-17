@@ -4,6 +4,9 @@ Changes
 0.6.2 (unreleased)
 ------------------
 
+- Downgrade log messages to debug level. In normal operation they don't contain
+  any valuable information. [hannosch]
+
 - Prefer zope.site over zope.app.component if it is available. [hannosch]
 
 0.6.1 (2010-02-09)

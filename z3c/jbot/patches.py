@@ -61,7 +61,7 @@ else:
         return five_bind(inst, view, cls)
 
     pt_class.__get__ = get_and_bind
-    logger.info(repr(pt_class))
+    logger.debug(repr(pt_class))
 
     del pt_class
 
@@ -84,13 +84,13 @@ else:
         return zope_bind(inst, view, cls)
 
     pt_class.__get__ = five_get_and_bind
-    logger.info(repr(pt_class))
+    logger.debug(repr(pt_class))
 
     del pt_class
 
 for pt_class in PT_CLASSES:
     pt_class.__get__ = get
-    logger.info(repr(pt_class))
+    logger.debug(repr(pt_class))
 
 # CMF skin layer resources
 try:
@@ -127,4 +127,4 @@ else:
     fs_class.__of__ = get_skin_obj
     fs_class.filename = property(get_filename, set_filename)
 
-    logger.info(repr(fs_class))
+    logger.debug(repr(fs_class))
