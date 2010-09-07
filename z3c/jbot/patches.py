@@ -70,13 +70,12 @@ else:
 try:
     from Products.Five.browser.pagetemplatefile import \
          ViewPageTemplateFile as pt_class
-    from Products.Five.browser.pagetemplatefile import \
-         BoundPageTemplate
+    zope_bind = pt_class.__get__
 except ImportError:
     pass
+except AttributeError:
+    pass
 else:
-    zope_bind = pt_class.__get__
-
     def five_get_and_bind(template, view=None, cls=None):
         inst = get(template, view, cls)
         if inst._v_last_read is False:

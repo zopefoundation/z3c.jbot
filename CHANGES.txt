@@ -4,6 +4,7 @@ Changes
 0.6.3 (unreleased)
 ------------------
 
+- Fixed compatibility with Plone 3.x. [malthe]
 
 0.6.2 (2010-02-17)
 ------------------
