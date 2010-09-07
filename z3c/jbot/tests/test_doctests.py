@@ -1,6 +1,6 @@
 import zope.interface
 import zope.component
-import zope.testing
+import zope.testing.doctest
 import unittest
 
 OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
