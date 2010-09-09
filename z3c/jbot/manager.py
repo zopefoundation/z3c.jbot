@@ -131,7 +131,7 @@ class TemplateManager(object):
         filename = path.replace(os.path.sep, '.')
         if filename not in paths:
             self.templates[token] = IGNORE
-            return
+            return True
 
         path = paths[filename]
 
