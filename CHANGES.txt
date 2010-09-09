@@ -1,6 +1,8 @@
 Changes
 =======
 
+- Use ``five.pt`` if available. [malthe]
+
 - Fixed an issue where tests would fail on Zope 2.10. [malthe]
 
 0.6.3 (2010-09-07)

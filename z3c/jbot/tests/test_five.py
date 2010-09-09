@@ -1,15 +1,19 @@
+import common
 import unittest
 
-class FiveTests(unittest.TestCase):
+from Testing.ZopeTestCase import ZopeTestCase
+
+
+class FiveTests(ZopeTestCase):
     def setUp(self):
-        import zope.component.testing
-        zope.component.testing.setUp(self)
-        import z3c.jbot.patches
+        common.setUp(self)
+        super(FiveTests, self).setUp()
 
         from Products.Five.browser.pagetemplatefile import \
              ZopeTwoPageTemplateFile as Template
 
         from Products.Five.browser import BrowserView
+
         class MockView(BrowserView):
             template = Template(
                 "templates/example.pt")
@@ -22,9 +26,11 @@ class FiveTests(unittest.TestCase):
 
         # set up mock site and request
         from zope.publisher.browser import TestRequest
+        from zope import component
+
         class MockSite(object):
             REQUEST = TestRequest("en")
-            getSiteManager = zope.component.getSiteManager
+            getSiteManager = component.getSiteManager
 
         try:
             from zope.site.hooks import setHooks, setSite
@@ -36,7 +42,7 @@ class FiveTests(unittest.TestCase):
         self._request = MockSite.REQUEST
 
         # render templates for later comparison
-        view = self._view = MockView(None, MockSite.REQUEST)
+        view = self._view = MockView(self.folder, MockSite.REQUEST)
         self._original = view.template()
         self._interface_override = view.interface_override()
         self._http_override = view.http_override()
@@ -52,7 +58,7 @@ class FiveTests(unittest.TestCase):
     def test_override_for_interface(self):
         from z3c.jbot.metaconfigure import handler
         from zope import interface
-        manager = handler(
+        handler(
             "%s/overrides/interface" % self._tests, interface.Interface)
         self.assertEqual(self._view.template(), self._interface_override)
 
@@ -65,9 +71,9 @@ class FiveTests(unittest.TestCase):
             pass
 
         # register handlers
-        general = handler(
+        handler(
             "%s/overrides/interface" % self._tests, interface.Interface)
-        http = handler(
+        handler(
             "%s/overrides/https" % self._tests, IHTTPSRequest)
 
         # we get the general override
@@ -82,6 +88,7 @@ class FiveTests(unittest.TestCase):
         from zope.interface import noLongerProvides
         noLongerProvides(self._request, IHTTPSRequest)
         self.assertEqual(self._view.template(), self._interface_override)
+
 
 def test_suite():
     return unittest.TestSuite((

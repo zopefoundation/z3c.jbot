@@ -6,11 +6,8 @@ import unittest
 OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
                zope.testing.doctest.NORMALIZE_WHITESPACE)
 
-import zope.component.testing
+from common import setUp
 
-def setUp(test):
-    zope.component.testing.setUp(test)
-    import z3c.jbot.patches
 
 def test_suite():
     globs = dict(
