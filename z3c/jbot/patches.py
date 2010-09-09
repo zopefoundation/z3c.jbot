@@ -36,6 +36,7 @@ def get(template, view=None, cls=None):
         # template was invalidated (changed filename)
         if manager.registerTemplate(inst, template):
             inst._v_last_read = False
+            inst.__dict__.pop('_v_template', None)
             break
 
     if view is not None and IAcquirer is not None:

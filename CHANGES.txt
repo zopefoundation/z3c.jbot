@@ -1,6 +1,9 @@
 Changes
 =======
 
+- Fixed issue where templates being patched by ``five.pt`` would not
+  get properly jbotted.
+
 - Use ``five.pt`` if available. [malthe]
 
 - Fixed an issue where tests would fail on Zope 2.10. [malthe]
