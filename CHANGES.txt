@@ -1,6 +1,9 @@
 Changes
 =======
 
+0.7 (2012-01-05)
+----------------
+
 - Fixed issue where templates being patched by ``five.pt`` would not
   get properly jbotted.
 
