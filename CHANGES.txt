@@ -1,6 +1,15 @@
 Changes
 =======
 
+In next release ...
+
+- Fixed an issue where multiple registrations against the same layer
+  would cause only one registration (decided randomly) to have effect.
+
+  The lookup code now uses the specification resolution order to query
+  for override registrations in order of specialization.
+  [malthe]
+
 0.7 (2012-01-05)
 ----------------
 

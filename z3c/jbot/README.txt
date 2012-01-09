@@ -36,6 +36,13 @@ that it's registered for the same template manager.
   >>> from z3c.jbot.metaconfigure import handler
   >>> manager = handler("%s/overrides/interface" % directory, interface.Interface)
 
+We make sure that the presence of an additional, trivial manager, does
+not affect the result. We register the system temporary directory:
+
+  >>> import tempfile
+  >>> handler(tempfile.tempdir, interface.Interface)
+  <z3c.jbot.manager.TemplateManager object at ...>
+
 We should now see that the new filename will be used for rendering:
 
   >>> view.template()
@@ -194,7 +201,7 @@ Providing the HTTP-request layer does not change this.
 
 Unregister overrides.
 
-  >>> for manager in z3c.jbot.utility.getManagers():
+  >>> for manager in z3c.jbot.utility.getManagers(IHTTPRequest):
   ...     manager.unregisterAllDirectories()
 
   >>> view.template()

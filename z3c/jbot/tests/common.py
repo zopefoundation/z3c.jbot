@@ -1,3 +1,6 @@
+import shutil
+import tempfile
+
 import zope.component.testing
 import zope.configuration.xmlconfig
 
@@ -15,3 +18,20 @@ def setUp(test):
         pass
     else:
         zope.configuration.xmlconfig.XMLConfig('configure.zcml', five.pt)()
+
+    test.tempdir = tempfile.tempdir
+    tempfile.tempdir = tempfile.mkdtemp()
+
+
+def tearDown(test):
+    zope.component.testing.tearDown(test)
+
+    try:
+        tempdir = test.tempdir
+    except AttributeError:
+        pass
+    else:
+        try:
+            shutil.rmtree(tempfile.tempdir)
+        finally:
+            tempfile.tempdir = tempdir

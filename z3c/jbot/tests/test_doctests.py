@@ -7,6 +7,7 @@ OPTIONFLAGS = (zope.testing.doctest.ELLIPSIS |
                zope.testing.doctest.NORMALIZE_WHITESPACE)
 
 from common import setUp
+from common import tearDown
 
 
 def test_suite():
@@ -19,7 +20,7 @@ def test_suite():
             'README.txt',
             optionflags=OPTIONFLAGS,
             setUp=setUp,
-            tearDown=zope.component.testing.tearDown,
+            tearDown=tearDown,
             globs=globs,
             package="z3c.jbot"),
         ))

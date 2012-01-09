@@ -31,7 +31,7 @@ def get(template, view=None, cls=None):
         inst = registry[key] = cls.__new__(cls)
         inst.__dict__ = template.__dict__.copy()
 
-    for manager in utility.getManagers():
+    for manager in utility.getManagers(layer):
         # register template; this call returns ``True`` if the
         # template was invalidated (changed filename)
         if manager.registerTemplate(inst, template):
@@ -109,7 +109,7 @@ else:
             inst = registry[key] = cls.__new__(cls)
             inst.__dict__ = obj.__dict__.copy()
 
-        for manager in utility.getManagers():
+        for manager in utility.getManagers(layer):
             # register template; this call returns ``True`` if the
             # template was invalidated (changed filename)
             if manager.registerTemplate(inst, obj):

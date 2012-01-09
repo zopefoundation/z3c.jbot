@@ -1,5 +1,6 @@
-from zope import interface
-from zope import component
+from zope.interface import Interface
+from zope.interface import providedBy
+from zope.component import getGlobalSiteManager
 
 try:
     from zope.site.hooks import getSite
@@ -11,13 +12,15 @@ from zope.publisher.interfaces import IRequest
 import zope.security.management
 import zope.security.interfaces
 
-import interfaces
+from z3c.jbot.interfaces import ITemplateManager
+
 
 try:
     import Acquisition
     ZOPE_2 = True
 except:
     ZOPE_2 = False
+
 
 def getRequest():
     if ZOPE_2:
@@ -38,18 +41,32 @@ def getRequest():
         if IRequest.providedBy(p):
             return p
 
+
 def getLayer():
     request = getRequest()
 
     if request is not None:
-        return interface.providedBy(request)
+        return providedBy(request)
 
-    return interface.Interface
+    return Interface
 
-def getManagers():
-    layer = getLayer()
-    gsm = component.getGlobalSiteManager()
 
-    for name, factory in reversed(
-        gsm.adapters.lookupAll((layer,), interfaces.ITemplateManager)):
-        yield factory(layer)
+def getManagers(layer):
+    try:
+        adapters = getGlobalSiteManager().adapters._adapters[1]
+    except IndexError:
+        return
+
+    for iface in layer.__sro__:
+        by_interface = adapters.get(iface)
+
+        if by_interface is not None:
+            managers = by_interface.get(ITemplateManager)
+
+            if managers is not None:
+                items = managers.items()
+                if len(items) > 1:
+                    items = sorted(items)
+
+                for name, factory in items:
+                    yield factory(layer)
