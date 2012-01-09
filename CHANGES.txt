@@ -1,7 +1,8 @@
 Changes
 =======
 
-In next release ...
+0.7.1 (2012-01-09)
+------------------
 
 - Fixed an issue where multiple registrations against the same layer
   would cause only one registration (decided randomly) to have effect.
