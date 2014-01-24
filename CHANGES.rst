@@ -1,6 +1,13 @@
 Changes
 =======
 
+0.7.1 (unreleased)
+------------------
+
+- Fix issue where zope.browserpage.viewpagetemplatefile.ViewPageTemplateFile
+  was not using jbot overrides.
+  [davisagli]
+
 0.7.1 (2012-01-09)
 ------------------
 

@@ -88,6 +88,28 @@ else:
 
     del pt_class
 
+# zope.browserpage ViewPageTemplateFile
+try:
+    from zope.browserpage.viewpagetemplatefile import \
+        ViewPageTemplateFile as pt_class
+    browserpage_bind = pt_class.__get__
+except ImportError:
+    pass
+except AttributeError:
+    pass
+else:
+    def get_and_bind(template, view=None, cls=None):
+        inst = get(template, view, cls)
+        if inst._v_last_read is False:
+            inst.read()
+        return browserpage_bind(inst, view, cls)
+
+    pt_class.__get__ = get_and_bind
+    logger.debug(repr(pt_class))
+
+    del pt_class
+
+
 for pt_class in PT_CLASSES:
     pt_class.__get__ = get
     logger.debug(repr(pt_class))
