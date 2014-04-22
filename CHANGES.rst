@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.7.1 (unreleased)
+0.7.2 (2014-04-22)
 ------------------
 
 - Fix issue where zope.browserpage.viewpagetemplatefile.ViewPageTemplateFile
