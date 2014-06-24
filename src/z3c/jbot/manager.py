@@ -64,6 +64,7 @@ class TemplateManagerFactory(object):
 
 class TemplateManager(object):
     interface.implements(interfaces.ITemplateManager)
+    order = 100
 
     def __init__(self, name):
         self.syspaths = tuple(sys.path)

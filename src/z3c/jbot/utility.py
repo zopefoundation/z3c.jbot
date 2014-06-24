@@ -42,8 +42,7 @@ def getRequest():
             return p
 
 
-def getLayer():
-    request = getRequest()
+def getLayer(request):
 
     if request is not None:
         return providedBy(request)
@@ -51,12 +50,21 @@ def getLayer():
     return Interface
 
 
-def getManagers(layer):
+MANAGER_CACHE_KEY = 'z3c.jbot.cached_managers'
+
+
+def getManagers(layer, request):
+    if not request:
+        return []
     try:
         adapters = getGlobalSiteManager().adapters._adapters[1]
     except IndexError:
-        return
+        return []
 
+    if MANAGER_CACHE_KEY in request.environ:
+        return request.environ[MANAGER_CACHE_KEY]
+
+    all_managers = []
     for iface in layer.__sro__:
         by_interface = adapters.get(iface)
 
@@ -69,4 +77,7 @@ def getManagers(layer):
                     items = sorted(items)
 
                 for name, factory in items:
-                    yield factory(layer)
+                    all_managers.append(factory(layer))
+    all_managers.sort(key=lambda m: m.order)
+    request.environ[MANAGER_CACHE_KEY] = all_managers
+    return all_managers

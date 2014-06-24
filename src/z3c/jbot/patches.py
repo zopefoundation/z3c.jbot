@@ -23,7 +23,8 @@ except:
 registry = {}
 
 def get(template, view=None, cls=None):
-    layer = utility.getLayer()
+    request = utility.getRequest()
+    layer = utility.getLayer(request)
     key = layer, template
     inst = registry.get(key)
     if inst is None:
@@ -31,7 +32,7 @@ def get(template, view=None, cls=None):
         inst = registry[key] = cls.__new__(cls)
         inst.__dict__ = template.__dict__.copy()
 
-    for manager in utility.getManagers(layer):
+    for manager in utility.getManagers(layer, request):
         # register template; this call returns ``True`` if the
         # template was invalidated (changed filename)
         if manager.registerTemplate(inst, template):
@@ -123,7 +124,8 @@ else:
     of = fs_class.__of__
 
     def get_skin_obj(obj, view=None, cls=None):
-        layer = utility.getLayer()
+        request = utility.getRequest()
+        layer = utility.getLayer(request)
         key = layer, obj
         inst = registry.get(key)
         if inst is None:
@@ -131,7 +133,7 @@ else:
             inst = registry[key] = cls.__new__(cls)
             inst.__dict__ = obj.__dict__.copy()
 
-        for manager in utility.getManagers(layer):
+        for manager in utility.getManagers(layer, request):
             # register template; this call returns ``True`` if the
             # template was invalidated (changed filename)
             if manager.registerTemplate(inst, obj):
