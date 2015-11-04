@@ -4,6 +4,8 @@ Changes
 0.7.1 (unreleased)
 ------------------
 
+- Standardize namespace __init__
+
 - Fix issue where zope.browserpage.viewpagetemplatefile.ViewPageTemplateFile
   was not using jbot overrides.
   [davisagli]
