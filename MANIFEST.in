@@ -1,7 +1,10 @@
 include *.rst
 include *.txt
+include *.py
+include buildout.cfg
+include tox.ini
 
-recursive-include src *
+recursive-include src *.pt *.zcml *.txt
 
 global-exclude *.pyc
 global-exclude *.pyo
