@@ -61,7 +61,7 @@ Upon rendering, the global template manager will have reverted the
 template filename to the original.
 
   >>> view.template.filename
-  '.../z3c.jbot/z3c/jbot/tests/templates/example.pt'
+  '.../z3c/jbot/tests/templates/example.pt'
 
 Overrides can be registered for a specific layer. Let's register three
 more overrides, one for the general-purpose ``IRequest`` layer, one
