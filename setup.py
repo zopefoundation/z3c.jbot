@@ -32,6 +32,9 @@ setup(
         'zope.security',
         'zope.publisher',
     ],
+    extras_require={
+        'test': ['Zope2'],
+    },
     entry_points="""
     [z3c.autoinclude.plugin]
     target = plone
