@@ -1,8 +1,8 @@
 from zope import interface
 from zope import component
 
-import manager
-import interfaces
+from . import manager
+from . import interfaces
 
 def handler(directory, layer):
     lookup_all = component.getGlobalSiteManager().adapters.lookupAll
@@ -28,7 +28,7 @@ def handler(directory, layer):
         factory = manager.TemplateManagerFactory(name)
         component.provideAdapter(
             factory, (layer,), interfaces.ITemplateManager, name=name)
-        
+
 
     factory(layer).registerDirectory(directory)
 

@@ -5,7 +5,7 @@ try:
 except ImportError:
     IAcquirer = None
 
-import utility
+from . import utility
 import logging
 
 logger = logging.getLogger('jbot')

@@ -1,10 +1,10 @@
-from zope import interface
+from zope.interface import implementer
 
 import os
 import sys
 
-import utility
-import interfaces
+from . import utility
+from . import interfaces
 
 IGNORE = object()
 DELETE = object()
@@ -62,8 +62,9 @@ class TemplateManagerFactory(object):
     def __call__(self, layer):
         return self.manager
 
+
+@implementer(interfaces.ITemplateManager)
 class TemplateManager(object):
-    interface.implements(interfaces.ITemplateManager)
 
     def __init__(self, name):
         self.syspaths = tuple(sys.path)
