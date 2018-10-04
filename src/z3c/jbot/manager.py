@@ -79,7 +79,7 @@ class TemplateManager(object):
         for filename in os.listdir(directory):
             self.paths[filename] = "%s/%s" % (directory, filename)
 
-        for template, filename in self.templates.items():
+        for template, filename in list(self.templates.items()):
             if filename is IGNORE:
                 del self.templates[template]
 
@@ -88,7 +88,7 @@ class TemplateManager(object):
 
         templates = []
 
-        for template, filename in self.templates.items():
+        for template, filename in list(self.templates.items()):
             if filename in self.paths:
                 templates.append(template)
 

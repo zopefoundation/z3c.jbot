@@ -1,4 +1,4 @@
-import common
+from . import common
 import unittest
 
 from Testing.ZopeTestCase import ZopeTestCase

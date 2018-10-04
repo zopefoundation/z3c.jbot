@@ -175,7 +175,7 @@ Configuring template override directories in ZCML
 First we load the metadirectives of the package. This will allow us
 to register template overrides directories in configuration files.
 
-  >>> from cStringIO import StringIO
+  >>> from six import StringIO
   >>> from zope.configuration import xmlconfig
   >>> xmlconfig.XMLConfig('meta.zcml', z3c.jbot)()
 
@@ -221,4 +221,3 @@ Since we now provide the HTTP-request layer, the override is used.
 
   >>> view.template()
   u'Override from ./http.\n'
-

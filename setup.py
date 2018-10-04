@@ -26,6 +26,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'six',
         'zope.pagetemplate',
         'zope.component',
         'zope.configuration',
