@@ -9,15 +9,18 @@ from . import interfaces
 IGNORE = object()
 DELETE = object()
 
+
 def root_length(a, b):
     if b.startswith(a):
         return len(a)
     else:
         return 0
 
+
 def sort_by_path(path, paths):
     return sorted(
         paths, key=lambda syspath: root_length(syspath, path), reverse=True)
+
 
 def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
@@ -54,6 +57,7 @@ def find_package(syspaths, path):
         path = path[1:]
 
     return path
+
 
 class TemplateManagerFactory(object):
     def __init__(self, name):
@@ -95,7 +99,6 @@ class TemplateManager(object):
         for filename in os.listdir(directory):
             if filename in self.paths:
                 del self.paths[filename]
-
         for template in templates:
             inst = template.__get__(self)
             self.registerTemplate(inst, template)
@@ -132,6 +135,7 @@ class TemplateManager(object):
         filename = path.replace(os.path.sep, '.')
         if filename not in paths:
             self.templates[token] = IGNORE
+            template._v_last_read = False
             return
 
         path = paths[filename]
