@@ -4,6 +4,8 @@ Changes
 0.7.1 (unreleased)
 ------------------
 
+- Port to Python 3 [ale-rt, pbauer]
+
 - Standardize namespace __init__
 
 - Fix issue where zope.browserpage.viewpagetemplatefile.ViewPageTemplateFile
