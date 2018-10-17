@@ -4,7 +4,8 @@ Changes
 0.7.1 (unreleased)
 ------------------
 
-- Port to Python 3 [ale-rt, pbauer]
+- Added support for Python 3.5, 3.6, 3.7; dropped support for 2.6.
+  [ale-rt, pbauer]
 
 - Standardize namespace __init__
 
