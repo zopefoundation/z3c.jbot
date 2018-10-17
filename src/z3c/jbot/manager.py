@@ -92,7 +92,7 @@ class TemplateManager(object):
 
         templates = []
 
-        for template, filename in list(self.templates.items()):
+        for template, filename in self.templates.items():
             if filename in self.paths:
                 templates.append(template)
 
