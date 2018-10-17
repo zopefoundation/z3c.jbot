@@ -1,10 +1,10 @@
-from zope.interface import implementer
-
 import os
 import sys
 
-from . import utility
+from zope.interface import implementer
+
 from . import interfaces
+from . import utility
 
 IGNORE = object()
 DELETE = object()

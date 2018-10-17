@@ -1,9 +1,11 @@
-import zope.interface
-import zope.component
 import doctest
 import re
-import six
 import unittest
+
+import six
+
+import zope.component
+import zope.interface
 
 from .common import setUp
 from .common import tearDown

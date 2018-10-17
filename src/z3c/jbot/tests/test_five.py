@@ -1,7 +1,8 @@
-from . import common
 import unittest
 
 from Testing.ZopeTestCase import ZopeTestCase
+
+from . import common
 
 
 class FiveTests(ZopeTestCase):

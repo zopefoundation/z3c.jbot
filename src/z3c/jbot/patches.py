@@ -1,12 +1,14 @@
+import logging
+
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
+
+from . import utility
 
 try:
     from Acquisition.interfaces import IAcquirer
 except ImportError:
     IAcquirer = None
 
-from . import utility
-import logging
 
 logger = logging.getLogger('jbot')
 

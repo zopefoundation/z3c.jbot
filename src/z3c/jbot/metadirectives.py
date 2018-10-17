@@ -1,6 +1,7 @@
-from zope.interface import Interface
 from zope.configuration import fields
 from zope.configuration.fields import GlobalObject
+from zope.interface import Interface
+
 
 class ITemplateOverridesDirective(Interface):
     """Directive which registers a directory with template overrides."""
@@ -14,4 +15,3 @@ class ITemplateOverridesDirective(Interface):
         description=u"By default overrides are used for all layers.",
         required=False
         )
-

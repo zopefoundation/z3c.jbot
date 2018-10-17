@@ -1,8 +1,9 @@
-from zope import interface
 from zope import component
+from zope import interface
 
-from . import manager
 from . import interfaces
+from . import manager
+
 
 def handler(directory, layer):
     lookup_all = component.getGlobalSiteManager().adapters.lookupAll
