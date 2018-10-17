@@ -19,7 +19,8 @@ def root_length(a, b):
 
 def sort_by_path(path, paths):
     return sorted(
-        paths, key=lambda syspath: root_length(syspath, path), reverse=True)
+        paths, key=lambda syspath: root_length(syspath, path), reverse=True
+    )
 
 
 def find_zope2_product(path):
@@ -32,7 +33,7 @@ def find_zope2_product(path):
     if not path.startswith(syspath):
         return None
 
-    product = path[len(syspath)+1:].split(os.path.sep, 2)[0]
+    product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
 
     return "Products." + product
 
@@ -50,7 +51,7 @@ def find_package(syspaths, path):
             return find_zope2_product(path)
         return None
 
-    path = path[len(syspath):]
+    path = path[len(syspath) :]
 
     # convert path to dotted filename
     if path.startswith(os.path.sep):
@@ -69,7 +70,6 @@ class TemplateManagerFactory(object):
 
 @implementer(interfaces.ITemplateManager)
 class TemplateManager(object):
-
     def __init__(self, name):
         self.syspaths = tuple(sys.path)
         self.templates = {}

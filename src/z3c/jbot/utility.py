@@ -11,14 +11,10 @@ try:
 except ImportError:
     from zope.app.component.hooks import getSite
 
-
-
-
-
 try:
-    import Acquisition
+    import Acquisition  # noqa
     ZOPE_2 = True
-except:
+except ImportError:
     ZOPE_2 = False
 
 

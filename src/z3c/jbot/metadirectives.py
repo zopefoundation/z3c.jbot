@@ -8,10 +8,11 @@ class ITemplateOverridesDirective(Interface):
 
     directory = fields.Path(
         title=u"Path to directory",
-        required=True)
+        required=True,
+    )
 
     layer = GlobalObject(
         title=u"The layer the overrides should be enabled for",
         description=u"By default overrides are used for all layers.",
-        required=False
-        )
+        required=False,
+    )
