@@ -5,8 +5,8 @@ python:
     - 3.5
     - 3.6
 install:
-    - python bootstrap.py
-    - bin/buildout
+    - pip install -U setuptools zc.buildout
+    - buildout
 script:
     - bin/test -v1
 notifications:
