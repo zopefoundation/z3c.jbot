@@ -1,12 +1,14 @@
+import logging
+
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
+
+from . import utility
 
 try:
     from Acquisition.interfaces import IAcquirer
 except ImportError:
     IAcquirer = None
 
-import utility
-import logging
 
 logger = logging.getLogger('jbot')
 
@@ -17,10 +19,11 @@ PT_CLASSES = [PageTemplateFile]
 try:
     import Products.PageTemplates.PageTemplateFile
     PT_CLASSES.append(Products.PageTemplates.PageTemplateFile.PageTemplateFile)
-except:
+except ImportError:
     pass
 
 registry = {}
+
 
 def get(template, view=None, cls=None):
     layer = utility.getLayer()
@@ -45,10 +48,10 @@ def get(template, view=None, cls=None):
 
     return inst
 
+
 # five.pt / Chameleon
 try:
-    from five.pt.pagetemplate import ViewPageTemplateFile as \
-         pt_class
+    from five.pt.pagetemplate import ViewPageTemplateFile as pt_class
 except ImportError:
     pass
 else:
@@ -69,8 +72,9 @@ else:
 # Zope 2.12 ViewPageTemplateFile; note that we import
 # ``BoundPageTemplate`` to provoke an import-error on Zope 2.10.
 try:
-    from Products.Five.browser.pagetemplatefile import \
-         ViewPageTemplateFile as pt_class
+    from Products.Five.browser.pagetemplatefile import (
+        ViewPageTemplateFile as pt_class
+    )
     zope_bind = pt_class.__get__
 except ImportError:
     pass

@@ -1,13 +1,14 @@
-from zope import interface
-
 import os
 import sys
 
-import utility
-import interfaces
+from zope.interface import implementer
+
+from . import interfaces
+from . import utility
 
 IGNORE = object()
 DELETE = object()
+
 
 def root_length(a, b):
     if b.startswith(a):
@@ -15,9 +16,12 @@ def root_length(a, b):
     else:
         return 0
 
+
 def sort_by_path(path, paths):
     return sorted(
-        paths, key=lambda syspath: root_length(syspath, path), reverse=True)
+        paths, key=lambda syspath: root_length(syspath, path), reverse=True
+    )
+
 
 def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
@@ -29,7 +33,7 @@ def find_zope2_product(path):
     if not path.startswith(syspath):
         return None
 
-    product = path[len(syspath)+1:].split(os.path.sep, 2)[0]
+    product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
 
     return "Products." + product
 
@@ -47,13 +51,14 @@ def find_package(syspaths, path):
             return find_zope2_product(path)
         return None
 
-    path = path[len(syspath):]
+    path = path[len(syspath) :]
 
     # convert path to dotted filename
     if path.startswith(os.path.sep):
         path = path[1:]
 
     return path
+
 
 class TemplateManagerFactory(object):
     def __init__(self, name):
@@ -62,9 +67,9 @@ class TemplateManagerFactory(object):
     def __call__(self, layer):
         return self.manager
 
-class TemplateManager(object):
-    interface.implements(interfaces.ITemplateManager)
 
+@implementer(interfaces.ITemplateManager)
+class TemplateManager(object):
     def __init__(self, name):
         self.syspaths = tuple(sys.path)
         self.templates = {}
@@ -78,7 +83,7 @@ class TemplateManager(object):
         for filename in os.listdir(directory):
             self.paths[filename] = "%s/%s" % (directory, filename)
 
-        for template, filename in self.templates.items():
+        for template, filename in list(self.templates.items()):
             if filename is IGNORE:
                 del self.templates[template]
 
@@ -94,7 +99,6 @@ class TemplateManager(object):
         for filename in os.listdir(directory):
             if filename in self.paths:
                 del self.paths[filename]
-
         for template in templates:
             inst = template.__get__(self)
             self.registerTemplate(inst, template)
@@ -131,6 +135,7 @@ class TemplateManager(object):
         filename = path.replace(os.path.sep, '.')
         if filename not in paths:
             self.templates[token] = IGNORE
+            template._v_last_read = False
             return
 
         path = paths[filename]

@@ -1,8 +1,14 @@
 Changes
 =======
 
-0.7.1 (unreleased)
-------------------
+0.8 (unreleased)
+----------------
+
+- Added support for Python 3.5, 3.6, 3.7; dropped support for 2.6.
+  [ale-rt, pbauer]
+
+- Fix: Be sure ignored templates will reread from disk.
+  [ale-rt]
 
 - Standardize namespace __init__
 

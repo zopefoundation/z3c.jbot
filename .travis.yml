@@ -1,10 +1,16 @@
 language: python
 sudo: false
-python:
-    - 2.7
+matrix:
+  include:
+    - python: "2.7"
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+      dist: xenial
+      sudo: true
 install:
-    - python bootstrap.py
-    - bin/buildout
+    - pip install -U setuptools zc.buildout
+    - buildout
 script:
     - bin/test -v1
 notifications:
