@@ -15,6 +15,7 @@ setup(
         'Framework :: Zope3',
         'Framework :: Zope :: 3',
         'Framework :: Zope :: 4',
+        'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
