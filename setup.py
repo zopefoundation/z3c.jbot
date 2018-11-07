@@ -24,7 +24,7 @@ setup(
     keywords='page template override',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    url='http://pypi.python.org/pypi/z3c.jbot',
+    url='https://pypi.org/project/z3c.jbot',
     license='ZPL 2.1',
     packages=find_packages('src'),
     package_dir={'': 'src'},
