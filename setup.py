@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '0.8'
+__version__ = '0.8.1.dev0'
 
 setup(
     name='z3c.jbot',
@@ -15,6 +15,7 @@ setup(
         'Framework :: Zope3',
         'Framework :: Zope :: 3',
         'Framework :: Zope :: 4',
+        'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
@@ -24,7 +25,7 @@ setup(
     keywords='page template override',
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    url='http://pypi.python.org/pypi/z3c.jbot',
+    url='https://pypi.org/project/z3c.jbot',
     license='ZPL 2.1',
     packages=find_packages('src'),
     package_dir={'': 'src'},
