@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.8 (unreleased)
+0.8 (2018-11-07)
 ----------------
 
 - Added support for Python 3.5, 3.6, 3.7; dropped support for 2.6.
