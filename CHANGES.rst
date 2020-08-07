@@ -4,6 +4,12 @@ Changes
 0.8.1 (unreleased)
 ------------------
 
+- Add Github Actions testrunners for ``ubuntu``, ``windows`` and ``macos``.
+  [jensens]
+
+- Run tests with Zope 4.5.
+  [jensens]
+
 - Test/support for Python 3.8.
   [jensens]
 
