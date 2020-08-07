@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.8.1 (unreleased)
+1.0.0 (unreleased)
 ------------------
 
 - Add Github Actions testrunners for ``ubuntu``, ``windows`` and ``macos``.
@@ -10,7 +10,7 @@ Changes
 - Run tests with Zope 4.5.
   [jensens]
 
-- Test/support for Python 3.8.
+- Breaking: Add and test/support for Python 3.8. Drop support for Python 3.5.
   [jensens]
 
 
