@@ -4,7 +4,8 @@ Changes
 0.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Test/support for Python 3.8.
+  [jensens]
 
 
 0.8 (2018-11-07)
