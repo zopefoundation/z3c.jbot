@@ -4,6 +4,9 @@ Changes
 1.0.0 (unreleased)
 ------------------
 
+- Fix tests to run on ``windows``.
+  [jensens]
+
 - Add Github Actions testrunners for ``ubuntu``, ``windows`` and ``macos``.
   [jensens]
 

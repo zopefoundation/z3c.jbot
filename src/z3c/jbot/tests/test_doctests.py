@@ -20,6 +20,7 @@ class Py23DocChecker(doctest.OutputChecker):
             want = re.sub("b'(.*?)'", "'\\1'", want)
         else:
             want = re.sub("u'(.*?)'", "'\\1'", want)
+        want = want.replace(r"\r\n", r"\n")
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
 
