@@ -1,13 +1,16 @@
 import os
 import sys
+import tempfile
 
 from zope.interface import implementer
 
 from . import interfaces
 from . import utility
 
+
 IGNORE = object()
 DELETE = object()
+
 
 
 def root_length(a, b):
@@ -28,24 +31,26 @@ def find_zope2_product(path):
     path is part of a Product."""
 
     _syspaths = sort_by_path(path, sys.modules["Products"].__path__)
-    syspath = _syspaths[0]
+    syspath = os.path.normcase(os.path.normpath(_syspaths[0]))
 
+    path = os.path.normcase(os.path.normpath(path))
     if not path.startswith(syspath):
         return None
 
     product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
 
-    return "Products." + product
+    return os.path.normcase("Products." + product)
 
 
 def find_package(syspaths, path):
     """Determine the Python-package where path is located.  If the path is
-    not located within the Python sys-path, return ``None``."""
+    not located within the Python sys-path, return ``None``.
+    The returned path is already 'normcase'. """
 
     _syspaths = sort_by_path(path, syspaths)
-    syspath = _syspaths[0]
+    syspath = os.path.normcase(os.path.normpath(_syspaths[0]))
 
-    path = os.path.normpath(path)
+    path = os.path.normcase(os.path.normpath(path))
     if not path.startswith(syspath):
         if utility.ZOPE_2:
             return find_zope2_product(path)
@@ -78,9 +83,11 @@ class TemplateManager(object):
         self.name = name
 
     def registerDirectory(self, directory):
+        directory = os.path.normcase(directory)
         self.directories.add(directory)
 
         for filename in os.listdir(directory):
+            filename = os.path.normcase(filename)
             self.paths[filename] = "%s/%s" % (directory, filename)
 
         for template, filename in list(self.templates.items()):
@@ -88,6 +95,7 @@ class TemplateManager(object):
                 del self.templates[template]
 
     def unregisterDirectory(self, directory):
+        directory = os.path.normcase(directory)
         self.directories.remove(directory)
 
         templates = []
@@ -122,7 +130,7 @@ class TemplateManager(object):
 
         # verify that override has not been unregistered
         if filename is not None and filename not in paths:
-            template.filename = template._filename
+            template.filename = os.path.normcase(template._filename)
             del self.templates[token]
 
         # check if an override exists
@@ -132,7 +140,7 @@ class TemplateManager(object):
             self.templates[token] = IGNORE
             return
 
-        filename = path.replace(os.path.sep, '.')
+        filename = path.replace('/', '.')
         if filename not in paths:
             self.templates[token] = IGNORE
             template._v_last_read = False
