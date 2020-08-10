@@ -1,15 +1,12 @@
 from z3c.jbot.interfaces import ITemplateManager
 from zope.component import getGlobalSiteManager
+from zope.component.hooks import getSite
 from zope.interface import Interface
 from zope.interface import providedBy
 from zope.publisher.interfaces import IRequest
 import zope.security.interfaces
 import zope.security.management
 
-try:
-    from zope.site.hooks import getSite
-except ImportError:
-    from zope.app.component.hooks import getSite
 
 try:
     import Acquisition  # noqa

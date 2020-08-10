@@ -4,6 +4,9 @@ Changes
 1.0.0 (unreleased)
 ------------------
 
+- Breaking: Remove long deprecated backward compatibility imports of getSite and setHooks.
+  [jensens]
+
 - Fix #8:  Broken on Windows (non case-sensitive filesystem).
   [jensens]
 
