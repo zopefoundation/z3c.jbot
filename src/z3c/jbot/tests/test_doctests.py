@@ -40,7 +40,7 @@ def test_suite():
 
     return unittest.TestSuite((
         doctest.DocFileSuite(
-            'README.txt',
+            'README.rst',
             optionflags=OPTIONFLAGS,
             setUp=setUp,
             tearDown=tearDown,
