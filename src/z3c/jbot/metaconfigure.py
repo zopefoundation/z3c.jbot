@@ -33,9 +33,9 @@ def handler(directory, layer):
             factory, (layer,), interfaces.ITemplateManager, name=name
         )
 
-    factory(layer).registerDirectory(directory)
-
-    return factory(layer)
+    template_manager = factory(layer)
+    template_manager.registerDirectory(directory)
+    return template_manager
 
 
 def templateOverridesDirective(_context, directory, layer=interface.Interface):

@@ -4,6 +4,9 @@ Changes
 1.0.0 (unreleased)
 ------------------
 
+- Fix #8:  Broken on Windows (non case-sensitive filesystem).
+  [jensens]
+
 - Fix tests to run on ``windows``.
   [jensens]
 
