@@ -13,7 +13,7 @@ Changes
 - Fix tests to run on ``windows``.
   [jensens]
 
-- Add Github Actions testrunners for ``ubuntu``, ``windows`` and ``macos``.
+- Add Github Actions testrunners for ``ubuntu``, ``windows``.
   [jensens]
 
 - Run tests with Zope 4.5.
