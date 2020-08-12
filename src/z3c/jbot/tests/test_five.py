@@ -36,10 +36,7 @@ class FiveTests(ZopeTestCase):
             REQUEST = TestRequest("en")
             getSiteManager = component.getSiteManager
 
-        try:
-            from zope.site.hooks import setHooks, setSite
-        except ImportError:
-            from zope.app.component.hooks import setHooks, setSite
+        from zope.component.hooks import setHooks, setSite
 
         setHooks()
         setSite(MockSite())

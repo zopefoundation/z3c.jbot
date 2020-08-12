@@ -1,10 +1,26 @@
 Changes
 =======
 
-0.8.1 (unreleased)
+1.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Breaking: Remove long deprecated backward compatibility imports of getSite and setHooks.
+  [jensens]
+
+- Fix #8:  Broken on Windows (non case-sensitive filesystem).
+  [jensens]
+
+- Fix tests to run on ``windows``.
+  [jensens]
+
+- Add Github Actions testrunners for ``ubuntu``, ``windows`` and ``macos``.
+  [jensens]
+
+- Run tests with Zope 4.5.
+  [jensens]
+
+- Breaking: Add and test/support for Python 3.8. Drop support for Python 3.5.
+  [jensens]
 
 
 0.8 (2018-11-07)

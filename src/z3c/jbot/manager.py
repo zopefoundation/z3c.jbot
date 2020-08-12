@@ -1,13 +1,19 @@
 import os
 import sys
+import tempfile
 
 from zope.interface import implementer
 
 from . import interfaces
 from . import utility
 
+
 IGNORE = object()
 DELETE = object()
+
+
+def normalize(filepath):
+    return(os.path.normcase(os.path.normpath(filepath)))
 
 
 def root_length(a, b):
@@ -27,25 +33,26 @@ def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
     path is part of a Product."""
 
-    _syspaths = sort_by_path(path, sys.modules["Products"].__path__)
-    syspath = _syspaths[0]
+    _syspaths = sort_by_path(path, normalize(sys.modules["Products"].__path__))
+    syspath = syspaths[0]
 
+    path = path
     if not path.startswith(syspath):
         return None
 
     product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
 
-    return "Products." + product
+    return normalize("Products." + product)
 
 
 def find_package(syspaths, path):
     """Determine the Python-package where path is located.  If the path is
-    not located within the Python sys-path, return ``None``."""
+    not located within the Python sys-path, return ``None``.
+    The returned path is already 'normcase'. """
 
     _syspaths = sort_by_path(path, syspaths)
     syspath = _syspaths[0]
 
-    path = os.path.normpath(path)
     if not path.startswith(syspath):
         if utility.ZOPE_2:
             return find_zope2_product(path)
@@ -56,7 +63,6 @@ def find_package(syspaths, path):
     # convert path to dotted filename
     if path.startswith(os.path.sep):
         path = path[1:]
-
     return path
 
 
@@ -71,33 +77,36 @@ class TemplateManagerFactory(object):
 @implementer(interfaces.ITemplateManager)
 class TemplateManager(object):
     def __init__(self, name):
-        self.syspaths = tuple(sys.path)
+        self.syspaths = {normalize(p) for p in sys.path}
         self.templates = {}
         self.paths = {}
         self.directories = set()
         self.name = name
 
     def registerDirectory(self, directory):
+        directory = normalize(directory)
         self.directories.add(directory)
 
         for filename in os.listdir(directory):
-            self.paths[filename] = "%s/%s" % (directory, filename)
+            filename = os.path.normcase(filename)
+            self.paths[filename] = normalize("%s%s%s" % (directory, os.path.sep, filename))
 
         for template, filename in list(self.templates.items()):
             if filename is IGNORE:
                 del self.templates[template]
 
     def unregisterDirectory(self, directory):
+        directory = normalize(directory)
         self.directories.remove(directory)
 
         templates = []
 
         for template, filename in self.templates.items():
-            if filename in self.paths:
+            if os.path.normcase(filename) in self.paths:
                 templates.append(template)
 
         for filename in os.listdir(directory):
-            if filename in self.paths:
+            if os.path.normcase(filename) in self.paths:
                 del self.paths[filename]
         for template in templates:
             inst = template.__get__(self)
@@ -116,6 +125,8 @@ class TemplateManager(object):
             return
 
         # if the template filename matches an override, we're done
+        if filename is not None:
+            filename = os.path.normcase(filename)
         paths = self.paths
         if paths.get(filename) == template.filename:
             return
@@ -126,7 +137,7 @@ class TemplateManager(object):
             del self.templates[token]
 
         # check if an override exists
-        path = find_package(self.syspaths, template.filename)
+        path = find_package(self.syspaths, normalize(template.filename))
         if path is None:
             # permanently ignore template
             self.templates[token] = IGNORE

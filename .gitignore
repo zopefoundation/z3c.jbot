@@ -8,9 +8,10 @@ man
 parts
 
 __pycache__
-.*
+.*.cfg
 *.dll
 *.pyc
 *.pyo
 *.so
 *.egg-info/
+*.vscode/

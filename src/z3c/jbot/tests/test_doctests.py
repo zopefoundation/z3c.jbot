@@ -10,12 +10,15 @@ import zope.interface
 from .common import setUp
 from .common import tearDown
 
-OPTIONFLAGS = (doctest.ELLIPSIS |
-               doctest.NORMALIZE_WHITESPACE)
+OPTIONFLAGS = (
+    doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
+)
 
 
 class Py23DocChecker(doctest.OutputChecker):
+
     def check_output(self, want, got, optionflags):
+        # fix binary/unicode differences between python versions
         if six.PY2:
             want = re.sub("b'(.*?)'", "'\\1'", want)
         else:
@@ -30,7 +33,7 @@ def test_suite():
 
     return unittest.TestSuite((
         doctest.DocFileSuite(
-            'README.txt',
+            'README.rst',
             optionflags=OPTIONFLAGS,
             setUp=setUp,
             tearDown=tearDown,

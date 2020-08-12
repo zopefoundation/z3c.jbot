@@ -4,7 +4,7 @@ z3c.jbot
 The z3c.jbot (or "Just a bunch of templates") package allows drop-in
 page template overrides.
 
-It works with templates which are defined as an attribute on a view.
+It works with templates which are defined as an attribute on a view::
 
   >>> from zope.pagetemplate.pagetemplatefile import PageTemplateFile
   >>> class View(object):
@@ -14,8 +14,8 @@ It works with templates which are defined as an attribute on a view.
 To render the template, we instantiate the view and call the
 ``template`` attribute.
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
 
 Providing a template override
 -----------------------------
@@ -25,59 +25,59 @@ template override directories.
 
 If we register the directory where it's placed with the global template
 manager, it will be used when rendering this template object instead
-of the original filename.
+of the original filename::
 
   >>> import z3c.jbot.tests
   >>> directory = z3c.jbot.tests.__path__[0]
 
 Register overrides directory (by default for any request); we confirm
-that it's registered for the same template manager.
+that it's registered for the same template manager::
 
   >>> from z3c.jbot.metaconfigure import handler
   >>> manager = handler("%s/overrides/interface" % directory, interface.Interface)
 
 We make sure that the presence of an additional, trivial manager, does
-not affect the result. We register the system temporary directory:
+not affect the result. We register the system temporary directory::
 
   >>> import tempfile
   >>> handler(tempfile.tempdir, interface.Interface)
   <z3c.jbot.manager.TemplateManager object at ...>
 
-We should now see that the new filename will be used for rendering:
+We should now see that the new filename will be used for rendering::
 
-  >>> view.template()
-  u'Override from ./interface.\n'
+  >>> print(view.template())
+  Override from ./interface.
 
-Before we proceed we'll clean up.
+Before we proceed we'll clean up::
 
   >>> manager.unregisterAllDirectories()
 
-The template does indeed render the original template.
+The template does indeed render the original template::
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
 
 Upon rendering, the global template manager will have reverted the
-template filename to the original.
+template filename to the original::
 
-  >>> view.template.filename
+  >>> view.template.filename.replace("\\", "/")
   '.../z3c/jbot/tests/templates/example.pt'
 
 Overrides can be registered for a specific layer. Let's register three
 more overrides, one for the general-purpose ``IRequest`` layer, one
 for the ``IHTTPRequest`` layer and one for a made-up ``IHTTPSRequest``
-layer.
+layer::
 
   >>> from zope.publisher.interfaces import IRequest
   >>> from zope.publisher.interfaces.http import IHTTPRequest
   >>> class IHTTPSRequest(IRequest):
   ...     """An HTTPS request."""
 
-Next we register an overrides directory for the ``IRequest`` layer.
+Next we register an overrides directory for the ``IRequest`` layer::
 
   >>> general = handler("%s/overrides/request" % directory, IRequest)
 
-Let's set up an interaction with a trivial participation.
+Let's set up an interaction with a trivial participation::
 
   >>> class Participation:
   ...     interaction = None
@@ -86,34 +86,37 @@ Let's set up an interaction with a trivial participation.
   >>> import zope.security.management
   >>> zope.security.management.newInteraction(participation)
 
-This participation does not provide even the basic request interface.
+This participation does not provide even the basic request interface::
 
   >>> IRequest.providedBy(participation)
   False
 
-We don't expect the template to be overriden for this interaction.
+We don't expect the template to be overriden for this interaction::
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
+  <BLANKLINE>
 
-Let's upgrade it.
+Let's upgrade it::
 
   >>> request = participation
   >>> interface.alsoProvides(request, IRequest)
 
-  >>> view.template()
-  u'Override from ./request.\n'
+  >>> print(view.template())
+  Override from ./request.
+  <BLANKLINE>
 
   >>> view.template._v_cooked
   1
 
-Going back to a basic request.
+Going back to a basic request::
 
   >>> interface.noLongerProvides(request, IRequest)
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
+  <BLANKLINE>
 
-Let's verify that we only cook once per template source.
+Let's verify that we only cook once per template source::
 
   >>> output = view.template()
   >>> view.template._v_last_read and view.template._v_cooked
@@ -124,39 +127,44 @@ Let's verify that we only cook once per template source.
   >>> view.template._v_last_read and view.template._v_cooked
   1
 
-  >>> view.template()
-  u'Override from ./request.\n'
+  >>> print(view.template())
+  Override from ./request.
+  <BLANKLINE>
 
-Now, if we switch to the HTTP-layer.
+Now, if we switch to the HTTP-layer::
 
   >>> interface.noLongerProvides(request, IRequest)
   >>> interface.alsoProvides(request, IHTTPRequest)
 
-  >>> view.template()
-  u'Override from ./request.\n'
+  >>> print(view.template())
+  Override from ./request.
+  <BLANKLINE>
 
   >>> general.unregisterAllDirectories()
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
+  <BLANKLINE>
 
   >>> http = handler("%s/overrides/http" % directory, IHTTPRequest)
   >>> https = handler("%s/overrides/https" % directory, IHTTPSRequest)
 
-  >>> view.template()
-  u'Override from ./http.\n'
+  >>> print(view.template())
+  Override from ./http.
+  <BLANKLINE>
 
-Switching to HTTPS.
+Switching to HTTPS::
 
   >>> interface.noLongerProvides(request, IHTTPRequest)
   >>> interface.alsoProvides(request, IHTTPSRequest)
 
-  >>> view.template()
-  u'Override from ./https.\n'
+  >>> print(view.template())
+  Override from ./https.
+  <BLANKLINE>
 
   >>> interface.noLongerProvides(request, IHTTPSRequest)
 
-Unregister all directories (cleanup).
+Unregister all directories (cleanup)::
 
   >>> for manager, layer in ((http, IHTTPRequest), (https, IHTTPSRequest)):
   ...     interface.alsoProvides(request, layer)
@@ -164,10 +172,11 @@ Unregister all directories (cleanup).
   ...     manager.unregisterAllDirectories()
   ...     interface.noLongerProvides(request, layer)
 
-The override is no longer in effect.
+The override is no longer in effect::
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
+  <BLANKLINE>
 
 Configuring template override directories in ZCML
 -------------------------------------------------
@@ -179,7 +188,7 @@ to register template overrides directories in configuration files.
   >>> from zope.configuration import xmlconfig
   >>> xmlconfig.XMLConfig('meta.zcml', z3c.jbot)()
 
-Let's try registering the directory again.
+Let's try registering the directory again::
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/browser">
@@ -187,27 +196,30 @@ Let's try registering the directory again.
   ... </configure>
   ... """ % directory))
 
-Once again, the override will be in effect.
+Once again, the override will be in effect::
 
-  >>> view.template()
-  u'Override from ./interface.\n'
+  >>> print(view.template())
+  Override from ./interface.
+  <BLANKLINE>
 
-Providing the HTTP-request layer does not change this.
+Providing the HTTP-request layer does not change this::
 
   >>> interface.alsoProvides(request, IHTTPRequest)
 
-  >>> view.template()
-  u'Override from ./interface.\n'
+  >>> print(view.template())
+  Override from ./interface.
+  <BLANKLINE>
 
-Unregister overrides.
+Unregister overrides::
 
   >>> for manager in z3c.jbot.utility.getManagers(IHTTPRequest):
   ...     manager.unregisterAllDirectories()
 
-  >>> view.template()
-  u'This is an example page template.\n'
+  >>> print(view.template())
+  This is an example page template.
+  <BLANKLINE>
 
-Let's register overrides for the HTTP-request layer.
+Let's register overrides for the HTTP-request layer::
 
   >>> xmlconfig.xmlconfig(StringIO("""
   ... <configure xmlns="http://namespaces.zope.org/browser">
@@ -217,7 +229,8 @@ Let's register overrides for the HTTP-request layer.
   ... </configure>
   ... """ % directory))
 
-Since we now provide the HTTP-request layer, the override is used.
+Since we now provide the HTTP-request layer, the override is used::
 
-  >>> view.template()
-  u'Override from ./http.\n'
+  >>> print(view.template())
+  Override from ./http.
+  <BLANKLINE>
