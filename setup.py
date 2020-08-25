@@ -9,6 +9,7 @@ setup(
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Zope',
         'Framework :: Zope2',
         'Framework :: Zope :: 2',
