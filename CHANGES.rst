@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0.0 (unreleased)
+1.0.0 (2020-08-25)
 ------------------
 
 - Breaking: Remove long deprecated backward compatibility imports of getSite and setHooks.
