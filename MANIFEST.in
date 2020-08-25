@@ -4,7 +4,7 @@ include *.py
 include buildout.cfg
 include tox.ini
 
-recursive-include src *.pt *.zcml *.txt
+graft src
 
 global-exclude *.pyc
 global-exclude *.pyo
