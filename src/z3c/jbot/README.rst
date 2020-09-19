@@ -2,7 +2,10 @@ z3c.jbot
 ========
 
 The z3c.jbot (or "Just a bunch of templates") package allows drop-in
-page template overrides.
+page template and resource file overrides.
+
+Templates
+---------
 
 It works with templates which are defined as an attribute on a view::
 
@@ -16,9 +19,6 @@ To render the template, we instantiate the view and call the
 
   >>> print(view.template())
   This is an example page template.
-
-Providing a template override
------------------------------
 
 We use the global template manager to register and unregister new
 template override directories.
@@ -178,8 +178,8 @@ The override is no longer in effect::
   This is an example page template.
   <BLANKLINE>
 
-Configuring template override directories in ZCML
--------------------------------------------------
+Using ZCML
+----------
 
 First we load the metadirectives of the package. This will allow us
 to register template overrides directories in configuration files.
@@ -234,3 +234,38 @@ Since we now provide the HTTP-request layer, the override is used::
   >>> print(view.template())
   Override from ./http.
   <BLANKLINE>
+
+Plone resources
+---------------
+
+We'll configure a plone static resource directory and set up
+jbot-based resource overrides:
+
+  >>> xmlconfig.xmlconfig(StringIO("""
+  ... <configure package="z3c.jbot"
+  ...     xmlns="http://namespaces.zope.org/browser" xmlns:plone="http://namespaces.plone.org/plone">
+  ... <include package="plone.resource" file="meta.zcml" />
+  ... <plone:static directory="tests/resources" type="plone"/>
+  ... <jbot directory="tests/overrides/resources" />
+  ... </configure>
+  ... """))
+
+Verify that we can query the test resource:
+
+  >>> from plone.resource.utils import queryResourceDirectory
+  >>> directory = queryResourceDirectory("plone", "z3c.jbot")
+  >>> resource = directory['test.txt']
+  >>> with open(resource.path) as f:
+  ...     f.read()
+  'Original\n'
+
+If we try to publish this resource, we'll get the resource override instead:
+
+  >>> from zope.component import getMultiAdapter
+  >>> from zope.publisher.interfaces.browser import IBrowserPublisher
+  >>> publisher = getMultiAdapter((resource, interface.Interface), IBrowserPublisher)
+  >>> resource, _ = publisher.browserDefault(None)
+  >>> with open(resource.path) as f:
+  ...     f.read()
+  'Override\n'
+

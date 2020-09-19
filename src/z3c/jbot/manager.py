@@ -66,6 +66,14 @@ def find_package(syspaths, path):
     return path
 
 
+class ResourceManagerFactory(object):
+    def __init__(self, name):
+        self.manager = TemplateManager(name)
+
+    def __call__(self, layer):
+        return self.manager
+
+
 class TemplateManagerFactory(object):
     def __init__(self, name):
         self.manager = TemplateManager(name)
@@ -78,6 +86,7 @@ class TemplateManagerFactory(object):
 class TemplateManager(object):
     def __init__(self, name):
         self.syspaths = {normalize(p) for p in sys.path}
+        self.resources = {}
         self.templates = {}
         self.paths = {}
         self.directories = set()
@@ -126,13 +135,11 @@ class TemplateManager(object):
 
         # if the template filename matches an override, we're done
         if filename is not None:
-            filename = os.path.normcase(filename)
-        paths = self.paths
-        if paths.get(filename) == template.filename:
-            return
+            if self.paths.get(filename) == template.filename:
+                return
 
         # verify that override has not been unregistered
-        if filename is not None and filename not in paths:
+        if filename is not None and filename not in self.paths:
             template.filename = template._filename
             del self.templates[token]
 
@@ -144,18 +151,39 @@ class TemplateManager(object):
             return
 
         filename = path.replace(os.path.sep, '.')
-        if filename not in paths:
+        if filename not in self.paths:
             self.templates[token] = IGNORE
             template._v_last_read = False
             return
 
-        path = paths[filename]
+        path = self.paths[filename]
 
         # save original filename
         template._filename = template.filename
 
         # save template and registry and assign path
         template.filename = path
-        self.templates[token] = filename
+        self.templates[token] = os.path.normcase(filename)
 
         return True
+
+    def queryResourcePath(self, resource):
+        path = self.resources.get(resource.path)
+        if path is IGNORE:
+            return
+
+        if path is not None:
+            return path
+
+        path = find_package(self.syspaths, normalize(resource.path))
+        if path is None:
+            self.resources[resource.path] = IGNORE
+            return
+
+        filename = path.replace(os.path.sep, '.')
+        resource_path = self.paths.get(filename)
+        if resource_path is None:
+            self.resources[resource.path] = IGNORE
+            return
+
+        return resource_path

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '1.0.1.dev0'
+__version__ = '1.1.0.dev'
 
 setup(
     name='z3c.jbot',
@@ -43,7 +43,12 @@ setup(
         'zope.publisher',
     ],
     extras_require={
-        'test': ['Zope2'],
+        'test': [
+            'Zope2',
+            'Products.BTreeFolder2',
+            'Products.CMFCore',
+            'plone.resource',
+        ],
     },
     entry_points="""
     [z3c.autoinclude.plugin]
