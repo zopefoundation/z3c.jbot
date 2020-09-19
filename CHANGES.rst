@@ -1,10 +1,12 @@
 Changes
 =======
 
-1.0.1 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added support for static resource registered using the "static"
+  directive of `plone.resource`.
+  [malthe]
 
 
 1.0.0 (2020-08-25)

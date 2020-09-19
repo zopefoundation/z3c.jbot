@@ -49,6 +49,12 @@ CMF objects
 Any skin-object (e.g. images, templates) on the file system (directory
 views) can be overridden.
 
+Plone resources
+---------------
+
+If `plone.resource` is installed, it's possible to use jbot to
+override filesystem resources.
+
 Author
 ------
 

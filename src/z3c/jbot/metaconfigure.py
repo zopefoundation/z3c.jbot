@@ -1,8 +1,16 @@
 from zope import component
 from zope import interface
+from zope.publisher.interfaces.browser import IBrowserPublisher
+
+try:
+    from plone.resource.file import FilesystemFile
+    HAS_PLONE_RESOURCE = True
+except ImportError:
+    HAS_PLONE_RESOURCE = False
 
 from . import interfaces
 from . import manager
+from . import browser
 
 
 def handler(directory, layer):
@@ -28,13 +36,20 @@ def handler(directory, layer):
         factory = factories.difference(base_factories).pop()
     except KeyError:
         name = directory
-        factory = manager.TemplateManagerFactory(name)
+        factory = manager.TemplateManagerFactory(directory)
         component.provideAdapter(
             factory, (layer,), interfaces.ITemplateManager, name=name
         )
 
+        if HAS_PLONE_RESOURCE:
+            component.provideAdapter(
+                browser.FilesystemFileResourceBrowserPublisher,
+                (FilesystemFile, layer), IBrowserPublisher
+            )
+
     template_manager = factory(layer)
     template_manager.registerDirectory(directory)
+
     return template_manager
 
 
