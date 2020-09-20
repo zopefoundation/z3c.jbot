@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '1.1.0.dev'
+__version__ = '1.1.0'
 
 setup(
     name='z3c.jbot',

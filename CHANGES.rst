@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.1.0 (unreleased)
+1.1.0 (2020-09-20)
 ------------------
 
 - Added support for static resource registered using the "static"
