@@ -13,14 +13,13 @@ DELETE = object()
 
 
 def normalize(filepath):
-    return(os.path.normcase(os.path.normpath(filepath)))
+    return os.path.normcase(os.path.normpath(filepath))
 
 
 def root_length(a, b):
     if b.startswith(a):
         return len(a)
-    else:
-        return 0
+    return 0
 
 
 def sort_by_path(path, paths):
@@ -32,13 +31,14 @@ def sort_by_path(path, paths):
 def find_zope2_product(path):
     """Check the Zope2 magic Products semi-namespace to see if the
     path is part of a Product."""
+    _syspaths = sort_by_path(
+        path, 
+        [normalize(path) for path in sys.modules["Products"].__path__],
+    )
+    syspath = _syspaths[0]
 
-    _syspaths = sort_by_path(path, normalize(sys.modules["Products"].__path__))
-    syspath = syspaths[0]
-
-    path = path
     if not path.startswith(syspath):
-        return None
+        return
 
     product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
 

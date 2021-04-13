@@ -3,7 +3,8 @@ Changes
 
 In next release ...
 
--
+- Fix error in find_zope2_product: "TypeError: expected str, bytes or os.PathLike object, not list".
+  [jensens]
 
 1.1.0 (2020-09-20)
 ------------------
