@@ -1,2 +1,0 @@
--r https://zopefoundation.github.io/Zope/releases/4.5/requirements-full.txt
-zc.buildout
