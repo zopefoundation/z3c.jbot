@@ -1,5 +1,7 @@
-from zope.interface import implementer, providedBy
+from zope.interface import implementer
+from zope.interface import providedBy
 from zope.publisher.interfaces.browser import IBrowserPublisher
+
 
 try:
     from plone.resource.file import FilesystemFile
@@ -33,4 +35,3 @@ class FilesystemFileResourceBrowserPublisher(object):
             resource = self.context
 
         return resource, ()
-

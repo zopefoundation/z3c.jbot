@@ -1,11 +1,12 @@
-from z3c.jbot.interfaces import ITemplateManager
+import zope.security.interfaces
+import zope.security.management
 from zope.component import getGlobalSiteManager
 from zope.component.hooks import getSite
 from zope.interface import Interface
 from zope.interface import providedBy
 from zope.publisher.interfaces import IRequest
-import zope.security.interfaces
-import zope.security.management
+
+from z3c.jbot.interfaces import ITemplateManager
 
 
 try:

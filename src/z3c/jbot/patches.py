@@ -4,6 +4,7 @@ from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
 from . import utility
 
+
 try:
     from Acquisition.interfaces import IAcquirer
 except ImportError:
@@ -72,9 +73,8 @@ else:
 # Zope 2.12 ViewPageTemplateFile; note that we import
 # ``BoundPageTemplate`` to provoke an import-error on Zope 2.10.
 try:
-    from Products.Five.browser.pagetemplatefile import (
+    from Products.Five.browser.pagetemplatefile import \
         ViewPageTemplateFile as pt_class
-    )
     zope_bind = pt_class.__get__
 except ImportError:
     pass

@@ -3,12 +3,12 @@ import re
 import unittest
 
 import six
-
 import zope.component
 import zope.interface
 
 from .common import setUp
 from .common import tearDown
+
 
 OPTIONFLAGS = (
     doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE

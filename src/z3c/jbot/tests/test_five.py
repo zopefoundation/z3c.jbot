@@ -10,11 +10,9 @@ class FiveTests(ZopeTestCase):
         common.setUp(self)
         super(FiveTests, self).setUp()
 
-        from Products.Five.browser.pagetemplatefile import (
-            ZopeTwoPageTemplateFile as Template
-        )
-
         from Products.Five.browser import BrowserView
+        from Products.Five.browser.pagetemplatefile import \
+            ZopeTwoPageTemplateFile as Template
 
         class MockView(BrowserView):
             template = Template("templates/example.pt")
@@ -29,14 +27,15 @@ class FiveTests(ZopeTestCase):
             )
 
         # set up mock site and request
-        from zope.publisher.browser import TestRequest
         from zope import component
+        from zope.publisher.browser import TestRequest
 
         class MockSite(object):
             REQUEST = TestRequest("en")
             getSiteManager = component.getSiteManager
 
-        from zope.component.hooks import setHooks, setSite
+        from zope.component.hooks import setHooks
+        from zope.component.hooks import setSite
 
         setHooks()
         setSite(MockSite())
@@ -59,16 +58,18 @@ class FiveTests(ZopeTestCase):
         zope.component.testing.tearDown(self)
 
     def test_override_for_interface(self):
-        from z3c.jbot.metaconfigure import handler
         from zope import interface
+
+        from z3c.jbot.metaconfigure import handler
 
         handler("%s/overrides/interface" % self._tests, interface.Interface)
         self.assertEqual(self._view.template(), self._interface_override)
 
     def test_override_for_httprequest(self):
-        from z3c.jbot.metaconfigure import handler
         from zope import interface
         from zope.publisher.interfaces.browser import IHTTPRequest
+
+        from z3c.jbot.metaconfigure import handler
 
         class IHTTPSRequest(IHTTPRequest):
             pass
