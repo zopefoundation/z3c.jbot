@@ -8,7 +8,7 @@ from . import common
 class FiveTests(ZopeTestCase):
     def setUp(self):
         common.setUp(self)
-        super(FiveTests, self).setUp()
+        super().setUp()
 
         from Products.Five.browser import BrowserView
         from Products.Five.browser.pagetemplatefile import \
@@ -30,7 +30,7 @@ class FiveTests(ZopeTestCase):
         from zope import component
         from zope.publisher.browser import TestRequest
 
-        class MockSite(object):
+        class MockSite:
             REQUEST = TestRequest("en")
             getSiteManager = component.getSiteManager
 
@@ -95,8 +95,5 @@ class FiveTests(ZopeTestCase):
 
 
 def test_suite():
-    return unittest.TestSuite((unittest.makeSuite(FiveTests),))
-
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+    return unittest.TestSuite(
+        (unittest.defaultTestLoader.loadTestsFromTestCase(FiveTests),))

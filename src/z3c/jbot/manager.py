@@ -28,7 +28,7 @@ def sort_by_path(path, paths):
 
 
 def find_zope2_product(path):
-    """Check the Zope2 magic Products semi-namespace to see if the
+    """Check the Zope 5 magic Products semi-namespace to see if the
     path is part of a Product."""
     _syspaths = sort_by_path(
         path,
@@ -53,7 +53,7 @@ def find_package(syspaths, path):
     syspath = _syspaths[0]
 
     if not path.startswith(syspath):
-        if utility.ZOPE_2:
+        if not utility.ZOPE_3:
             return find_zope2_product(path)
         return None
 
@@ -65,7 +65,7 @@ def find_package(syspaths, path):
     return path
 
 
-class ResourceManagerFactory(object):
+class ResourceManagerFactory:
     def __init__(self, name):
         self.manager = TemplateManager(name)
 
@@ -73,7 +73,7 @@ class ResourceManagerFactory(object):
         return self.manager
 
 
-class TemplateManagerFactory(object):
+class TemplateManagerFactory:
     def __init__(self, name):
         self.manager = TemplateManager(name)
 
@@ -82,7 +82,7 @@ class TemplateManagerFactory(object):
 
 
 @implementer(interfaces.ITemplateManager)
-class TemplateManager(object):
+class TemplateManager:
     def __init__(self, name):
         self.syspaths = {normalize(p) for p in sys.path}
         self.resources = {}

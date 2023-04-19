@@ -18,10 +18,10 @@ def handler(directory, layer):
     lookup_all = component.getGlobalSiteManager().adapters.lookupAll
 
     # check if a template manager already exists
-    factories = set(
+    factories = {
         factory
         for name, factory in lookup_all((layer,), interfaces.ITemplateManager)
-    )
+    }
 
     # this might yield several factories (template managers); we check
     # if one is registered for exactly our layer

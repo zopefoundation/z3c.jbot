@@ -11,13 +11,13 @@ from z3c.jbot.interfaces import ITemplateManager
 
 try:
     import Acquisition  # noqa
-    ZOPE_2 = True
+    ZOPE_3 = False
 except ImportError:
-    ZOPE_2 = False
+    ZOPE_3 = False
 
 
 def getRequest():
-    if ZOPE_2:
+    if not ZOPE_3:
         # get request by acquisition
         site = getSite()
         if site is not None:
