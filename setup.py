@@ -2,11 +2,9 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-__version__ = '1.1.2.dev0'
-
 setup(
     name='z3c.jbot',
-    version=__version__,
+    version='1.1.2.dev0',
     description="Drop-in template overrides.",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
