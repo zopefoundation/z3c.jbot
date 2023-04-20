@@ -13,7 +13,7 @@ try:
     import Acquisition  # noqa
     ZOPE_3 = False
 except ImportError:
-    ZOPE_3 = False
+    ZOPE_3 = True
 
 
 def getRequest():
