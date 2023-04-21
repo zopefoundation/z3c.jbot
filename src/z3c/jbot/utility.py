@@ -1,22 +1,23 @@
-from z3c.jbot.interfaces import ITemplateManager
+import zope.security.interfaces
+import zope.security.management
 from zope.component import getGlobalSiteManager
 from zope.component.hooks import getSite
 from zope.interface import Interface
 from zope.interface import providedBy
 from zope.publisher.interfaces import IRequest
-import zope.security.interfaces
-import zope.security.management
+
+from z3c.jbot.interfaces import ITemplateManager
 
 
 try:
     import Acquisition  # noqa
-    ZOPE_2 = True
+    ZOPE_3 = False
 except ImportError:
-    ZOPE_2 = False
+    ZOPE_3 = True
 
 
 def getRequest():
-    if ZOPE_2:
+    if not ZOPE_3:
         # get request by acquisition
         site = getSite()
         if site is not None:

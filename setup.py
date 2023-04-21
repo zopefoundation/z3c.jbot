@@ -1,31 +1,29 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
-__version__ = '1.1.2.dev0'
 
 setup(
     name='z3c.jbot',
-    version=__version__,
+    version='2.0.dev0',
     description="Drop-in template overrides.",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Zope',
-        'Framework :: Zope2',
-        'Framework :: Zope :: 2',
-        'Framework :: Zope3',
         'Framework :: Zope :: 3',
-        'Framework :: Zope :: 4',
+        'Framework :: Zope :: 5',
         'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords='page template override',
     author='Zope Foundation and Contributors',
-    author_email='zope-dev@zope.org',
+    author_email='zope-dev@zope.dev',
     url='https://github.com/zopefoundation/z3c.jbot',
     license='ZPL 2.1',
     packages=find_packages('src'),
@@ -33,9 +31,9 @@ setup(
     namespace_packages=['z3c'],
     include_package_data=True,
     zip_safe=False,
+    python_requires='>=3.7',
     install_requires=[
         'setuptools',
-        'six',
         'zope.pagetemplate',
         'zope.component',
         'zope.configuration',
@@ -44,7 +42,7 @@ setup(
     ],
     extras_require={
         'test': [
-            'Zope2',
+            'Zope',
             'Products.BTreeFolder2',
             'Products.CMFCore',
             'plone.resource',

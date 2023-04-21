@@ -184,7 +184,7 @@ Using ZCML
 First we load the metadirectives of the package. This will allow us
 to register template overrides directories in configuration files.
 
-  >>> from six import StringIO
+  >>> from io import StringIO
   >>> from zope.configuration import xmlconfig
   >>> xmlconfig.XMLConfig('meta.zcml', z3c.jbot)()
 
@@ -268,4 +268,3 @@ If we try to publish this resource, we'll get the resource override instead:
   >>> with open(resource.path) as f:
   ...     f.read()
   'Override\n'
-

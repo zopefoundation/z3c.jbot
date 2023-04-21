@@ -1,6 +1,5 @@
 import os
 import sys
-import tempfile
 
 from zope.interface import implementer
 
@@ -29,10 +28,10 @@ def sort_by_path(path, paths):
 
 
 def find_zope2_product(path):
-    """Check the Zope2 magic Products semi-namespace to see if the
+    """Check the Zope 5 magic Products semi-namespace to see if the
     path is part of a Product."""
     _syspaths = sort_by_path(
-        path, 
+        path,
         [normalize(path) for path in sys.modules["Products"].__path__],
     )
     syspath = _syspaths[0]
@@ -40,7 +39,7 @@ def find_zope2_product(path):
     if not path.startswith(syspath):
         return
 
-    product = path[len(syspath) + 1 :].split(os.path.sep, 2)[0]
+    product = path[len(syspath) + 1:].split(os.path.sep, 2)[0]
 
     return normalize("Products." + product)
 
@@ -54,11 +53,11 @@ def find_package(syspaths, path):
     syspath = _syspaths[0]
 
     if not path.startswith(syspath):
-        if utility.ZOPE_2:
+        if not utility.ZOPE_3:
             return find_zope2_product(path)
         return None
 
-    path = path[len(syspath) :]
+    path = path[len(syspath):]
 
     # convert path to dotted filename
     if path.startswith(os.path.sep):
@@ -66,7 +65,7 @@ def find_package(syspaths, path):
     return path
 
 
-class ResourceManagerFactory(object):
+class ResourceManagerFactory:
     def __init__(self, name):
         self.manager = TemplateManager(name)
 
@@ -74,7 +73,7 @@ class ResourceManagerFactory(object):
         return self.manager
 
 
-class TemplateManagerFactory(object):
+class TemplateManagerFactory:
     def __init__(self, name):
         self.manager = TemplateManager(name)
 
@@ -83,7 +82,7 @@ class TemplateManagerFactory(object):
 
 
 @implementer(interfaces.ITemplateManager)
-class TemplateManager(object):
+class TemplateManager:
     def __init__(self, name):
         self.syspaths = {normalize(p) for p in sys.path}
         self.resources = {}
@@ -98,7 +97,9 @@ class TemplateManager(object):
 
         for filename in os.listdir(directory):
             filename = os.path.normcase(filename)
-            self.paths[filename] = normalize("%s%s%s" % (directory, os.path.sep, filename))
+            self.paths[filename] = normalize(
+                "%s%s%s" %
+                (directory, os.path.sep, filename))
 
         for template, filename in list(self.templates.items()):
             if filename is IGNORE:

@@ -2,25 +2,26 @@ from zope import component
 from zope import interface
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
+
 try:
     from plone.resource.file import FilesystemFile
     HAS_PLONE_RESOURCE = True
 except ImportError:
     HAS_PLONE_RESOURCE = False
 
+from . import browser
 from . import interfaces
 from . import manager
-from . import browser
 
 
 def handler(directory, layer):
     lookup_all = component.getGlobalSiteManager().adapters.lookupAll
 
     # check if a template manager already exists
-    factories = set(
+    factories = {
         factory
         for name, factory in lookup_all((layer,), interfaces.ITemplateManager)
-    )
+    }
 
     # this might yield several factories (template managers); we check
     # if one is registered for exactly our layer
