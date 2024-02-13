@@ -124,7 +124,7 @@ else:
 
     def get_skin_obj(obj, view=None, cls=None):
         layer = utility.getLayer()
-        key = layer, obj
+        key = layer, obj.filename
         inst = registry.get(key)
         if inst is None:
             cls = obj.__class__
@@ -134,7 +134,7 @@ else:
         for manager in utility.getManagers(layer):
             # register template; this call returns ``True`` if the
             # template was invalidated (changed filename)
-            if manager.registerTemplate(inst, obj):
+            if manager.registerTemplate(inst, token=obj.filename):
                 inst._parsed = False
                 inst.getObjectFSPath()
 
