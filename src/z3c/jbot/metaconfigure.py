@@ -2,6 +2,8 @@ from zope import component
 from zope import interface
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
+from .manager import update_deprecated_templates_dict
+
 
 try:
     from plone.resource.file import FilesystemFile
@@ -59,4 +61,14 @@ def templateOverridesDirective(_context, directory, layer=interface.Interface):
         discriminator=('jbot', directory, layer),
         callable=handler,
         args=(directory, layer),
+    )
+
+
+def deprecatedTemplatesDirective(_context, dictionary):
+    # Discriminators must be hashable.
+    dict_discriminator = "-".join(sorted(dictionary.keys()))
+    _context.action(
+        discriminator=('jbot', dict_discriminator),
+        callable=update_deprecated_templates_dict,
+        args=(dictionary,),
     )

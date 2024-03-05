@@ -1,5 +1,6 @@
 import os
 import sys
+import warnings
 
 from zope.interface import implementer
 
@@ -9,6 +10,14 @@ from . import utility
 
 IGNORE = object()
 DELETE = object()
+# Dictionary of templates that have been moved to a new location,
+# and for which we want an override for the old location to still work
+# for the new location as well.
+DEPRECATED_TEMPLATES_DICT = {}
+
+
+def update_deprecated_templates_dict(dictionary):
+    DEPRECATED_TEMPLATES_DICT.update(dictionary)
 
 
 def normalize(filepath):
@@ -97,9 +106,15 @@ class TemplateManager:
 
         for filename in os.listdir(directory):
             filename = os.path.normcase(filename)
-            self.paths[filename] = normalize(
-                "%s%s%s" %
-                (directory, os.path.sep, filename))
+            full_path = normalize(f"{directory}{os.path.sep}{filename}")
+            self.paths[filename] = full_path
+            canonical_filename = DEPRECATED_TEMPLATES_DICT.get(filename)
+            if canonical_filename:
+                warnings.warn(
+                    f"Template {full_path} deprecated, "
+                    f"use {canonical_filename} instead."
+                )
+                self.paths[canonical_filename] = full_path
 
         for template, filename in list(self.templates.items()):
             if filename is IGNORE:
