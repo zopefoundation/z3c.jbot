@@ -1,10 +1,11 @@
 Changes
 =======
 
-2.1 (unreleased)
+2.0.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix error when Plone site is not yet set as in first index_html call on Zope.
+  [bsuttor]
 
 
 2.0 (2023-05-04)
