@@ -24,7 +24,7 @@ def getRequest():
             try:
                 return site.request
             except AttributeError:
-                return None
+                return getattr(site, "REQUEST", None)
 
     try:
         i = zope.security.management.getInteraction()
