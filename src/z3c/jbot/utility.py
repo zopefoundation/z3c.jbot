@@ -11,7 +11,6 @@ from z3c.jbot.interfaces import ITemplateManager
 
 try:
     import Acquisition  # noqa
-    import Zope2  # noqa
     ZOPE_3 = False
 except ImportError:
     ZOPE_3 = True
@@ -25,7 +24,7 @@ def getRequest():
             try:
                 return site.request
             except AttributeError:
-                return getattr(site, "REQUEST", Zope2.app().REQUEST)
+                return None
 
     try:
         i = zope.security.management.getInteraction()
