@@ -2,7 +2,11 @@ Changes
 =======
 
 2.0.1 (unreleased)
-----------------
+------------------
+
+- Add support for Python 3.12, 3.13.
+
+- Drop support for Python 3.7.
 
 - Fix error when Plone site is not yet set as in first index_html call on Zope.
   [bsuttor]
