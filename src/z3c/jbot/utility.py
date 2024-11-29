@@ -12,7 +12,7 @@ from z3c.jbot.interfaces import ITemplateManager
 try:
     import Acquisition  # noqa
     ZOPE_3 = False
-except ImportError:
+except ModuleNotFoundError:
     ZOPE_3 = True
 
 

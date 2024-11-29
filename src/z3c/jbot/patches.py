@@ -7,7 +7,7 @@ from . import utility
 
 try:
     from Acquisition.interfaces import IAcquirer
-except ImportError:
+except ModuleNotFoundError:
     IAcquirer = None
 
 
@@ -20,7 +20,7 @@ PT_CLASSES = [PageTemplateFile]
 try:
     import Products.PageTemplates.PageTemplateFile
     PT_CLASSES.append(Products.PageTemplates.PageTemplateFile.PageTemplateFile)
-except ImportError:
+except ModuleNotFoundError:
     pass
 
 registry = {}
@@ -53,7 +53,7 @@ def get(template, view=None, cls=None):
 # five.pt / Chameleon
 try:
     from five.pt.pagetemplate import ViewPageTemplateFile as pt_class
-except ImportError:
+except ModuleNotFoundError:
     pass
 else:
     five_bind = pt_class.__get__
@@ -76,7 +76,7 @@ try:
     from Products.Five.browser.pagetemplatefile import \
         ViewPageTemplateFile as pt_class
     zope_bind = pt_class.__get__
-except ImportError:
+except ModuleNotFoundError:
     pass
 except AttributeError:
     pass
@@ -97,7 +97,7 @@ try:
     from zope.browserpage.viewpagetemplatefile import \
         ViewPageTemplateFile as pt_class
     browserpage_bind = pt_class.__get__
-except ImportError:
+except ModuleNotFoundError:
     pass
 except AttributeError:
     pass
@@ -121,7 +121,7 @@ for pt_class in PT_CLASSES:
 # CMF skin layer resources
 try:
     from Products.CMFCore.FSObject import FSObject as fs_class
-except ImportError:
+except ModuleNotFoundError:
     pass
 else:
     of = fs_class.__of__
