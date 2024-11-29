@@ -2,7 +2,7 @@ Changes
 =======
 
 2.0.1 (unreleased)
-----------------
+------------------
 
 - Add support for Python 3.12, 3.13.
 
