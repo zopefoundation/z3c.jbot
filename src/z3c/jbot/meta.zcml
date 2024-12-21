@@ -16,6 +16,12 @@
          handler=".metaconfigure.templateOverridesDirective"
          />
 
+      <meta:directive
+         name="jbotDeprecated"
+         schema=".metadirectives.IDeprecatedTemplatesDirective"
+         handler=".metaconfigure.deprecatedTemplatesDirective"
+         />
+
     </meta:directives>
 
 </configure>

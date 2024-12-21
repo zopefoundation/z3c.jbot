@@ -4,7 +4,10 @@ Changes
 2.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add ``jbotDeprecated`` directive with ``dictionary`` as single argument.
+  This can be used when you move templates and want an existing jbot
+  override for the old template path to still work.
+  [maurits]
 
 
 2.1 (2024-11-29)
