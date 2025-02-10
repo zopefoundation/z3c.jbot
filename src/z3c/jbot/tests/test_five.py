@@ -5,6 +5,11 @@ from Testing.ZopeTestCase import ZopeTestCase
 from . import common
 
 
+deprecations = {
+    "z3c.jbot.tests.templates.example_deprecated.pt": "z3c.jbot.tests.templates.example.pt"  # noqa: E501
+}
+
+
 class FiveTests(ZopeTestCase):
     def setUp(self):
         common.setUp(self)
@@ -18,6 +23,9 @@ class FiveTests(ZopeTestCase):
             template = Template("templates/example.pt")
             interface_override = Template(
                 "overrides/interface/z3c.jbot.tests.templates.example.pt"
+            )
+            interface_deprecated_override = Template(
+                "overrides/interface_deprecated/z3c.jbot.tests.templates.example_deprecated.pt"  # noqa: E501
             )
             http_override = Template(
                 "overrides/http/z3c.jbot.tests.templates.example.pt"
@@ -45,6 +53,7 @@ class FiveTests(ZopeTestCase):
         view = self._view = MockView(self.folder, MockSite.REQUEST)
         self._original = view.template()
         self._interface_override = view.interface_override()
+        self._interface_deprecated_override = view.interface_deprecated_override()  # noqa: E501
         self._http_override = view.http_override()
         self._https_override = view.https_override()
 
@@ -92,6 +101,58 @@ class FiveTests(ZopeTestCase):
 
         noLongerProvides(self._request, IHTTPSRequest)
         self.assertEqual(self._view.template(), self._interface_override)
+
+    def test_deprecated_override(self):
+        from unittest.mock import patch
+
+        from zope import interface
+
+        from z3c.jbot.metaconfigure import handler
+
+        overrides_folder = f"{self._tests}/overrides/interface_deprecated"
+
+        # Without the deprecation in place we do not get any warnings
+        with patch("warnings.warn") as mock_warn:
+            handler(overrides_folder, interface.Interface)
+            self.assertEqual(mock_warn.call_count, 0)
+
+        # and the view still uses the original template because the override
+        # is referring to a not existent template
+        self.assertEqual(self._view.template(), self._original)
+
+        # We now set up the deprecation
+        from zope.configuration import xmlconfig
+        xmlconfig.string(
+            """
+            <configure
+                xmlns="http://namespaces.zope.org/zope"
+                xmlns:browser="http://namespaces.zope.org/browser"
+            >
+                <include package="z3c.jbot" file="meta.zcml" />
+                <browser:jbotDeprecated dictionary="z3c.jbot.tests.test_five.deprecations" />
+            </configure>
+            """  # noqa: E501
+        )
+
+        # And rerun the handler
+        with patch("warnings.warn") as mock_warn:
+            handler(
+                overrides_folder, interface.Interface
+            )
+            self.assertEqual(mock_warn.call_count, 1)
+            self.assertTupleEqual(
+                mock_warn.call_args.args,
+                (
+                    f'Template {self._tests}/overrides/interface_deprecated/z3c.jbot.tests.templates.example_deprecated.pt '  # noqa: E501
+                    f'deprecated, use z3c.jbot.tests.templates.example.pt instead.',  # noqa: E501
+                )
+            )
+
+        # The view now is able to resolve the renamed template
+        self.assertEqual(
+            self._view.template(),
+            self._interface_deprecated_override,
+        )
 
 
 def test_suite():
