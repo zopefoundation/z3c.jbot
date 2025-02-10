@@ -19,7 +19,7 @@ testenv-deps = [
     ]
 
 [coverage]
-fail-under = 80
+fail-under = 81
 
 [manifest]
 additional-rules = [
