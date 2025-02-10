@@ -9,6 +9,9 @@ Changes
   override for the old template path to still work.
   [maurits]
 
+- Add a ``jbot-deprecations`` ZCML feature to conditionally set deprecations.
+  [ale-rt]
+
 
 2.1 (2024-11-29)
 ----------------

@@ -102,6 +102,25 @@ class FiveTests(ZopeTestCase):
         noLongerProvides(self._request, IHTTPSRequest)
         self.assertEqual(self._view.template(), self._interface_override)
 
+    def test_zcml_features(self):
+        from zope.configuration import xmlconfig
+        from zope.configuration.config import ConfigurationMachine
+
+        context = ConfigurationMachine()
+        xmlconfig.registerCommonDirectives(context)
+
+        xmlconfig.string(
+            """
+            <configure
+                xmlns="http://namespaces.zope.org/zope"
+            >
+                <include package="z3c.jbot" file="meta.zcml" />
+            </configure>
+            """, context=context
+        )
+
+        self.assertTrue(context.hasFeature("jbot-deprecations"))
+
     def test_deprecated_override(self):
         from unittest.mock import patch
 
