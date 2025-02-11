@@ -12,6 +12,7 @@ Changes
 - Add a ``jbot-deprecations`` ZCML feature to conditionally set deprecations.
   [ale-rt]
 
+- Drop support for Python 3.8.
 
 2.1 (2024-11-29)
 ----------------
