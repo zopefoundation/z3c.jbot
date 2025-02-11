@@ -4,7 +4,7 @@ Changes
 2.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Drop support for Python 3.8.
 
 
 2.1 (2024-11-29)
