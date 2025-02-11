@@ -12,7 +12,7 @@ from z3c.jbot.interfaces import ITemplateManager
 try:
     import Acquisition  # noqa
     ZOPE_3 = False
-except ImportError:
+except ModuleNotFoundError:
     ZOPE_3 = True
 
 
@@ -24,7 +24,7 @@ def getRequest():
             try:
                 return site.request
             except AttributeError:
-                return site.REQUEST
+                return getattr(site, "REQUEST", None)
 
     try:
         i = zope.security.management.getInteraction()

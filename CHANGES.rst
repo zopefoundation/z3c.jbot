@@ -1,10 +1,23 @@
 Changes
 =======
 
-2.1 (unreleased)
+2.2 (unreleased)
 ----------------
 
 - skins scripts/templates now cached using filesystem path as key to prevent memory leak of requests [djay]
+
+- Drop support for Python 3.8.
+
+
+2.1 (2024-11-29)
+----------------
+
+- Add support for Python 3.12, 3.13.
+
+- Drop support for Python 3.7.
+
+- Fix error when Plone site is not yet set as in first index_html call on Zope.
+  [bsuttor]
 
 
 2.0 (2023-05-04)

@@ -14,7 +14,7 @@ def setUp(test):
     # enable five.pt if present
     try:
         import five.pt
-    except ImportError:
+    except ModuleNotFoundError:
         pass
     else:
         zope.configuration.xmlconfig.XMLConfig('configure.zcml', five.pt)()

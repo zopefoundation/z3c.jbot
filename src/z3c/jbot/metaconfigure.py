@@ -6,7 +6,7 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 try:
     from plone.resource.file import FilesystemFile
     HAS_PLONE_RESOURCE = True
-except ImportError:
+except ModuleNotFoundError:
     HAS_PLONE_RESOURCE = False
 
 from . import browser
