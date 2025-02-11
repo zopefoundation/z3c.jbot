@@ -64,28 +64,24 @@ Imagine this situation:
 * The template override in the project no longer works and the other person starts asking questions or complaining.
 
 To solve this problem, you can register that a template path is deprecated.
-First add a dictionary to the ``base`` package, let's say in a file ``utils.py``:
+First add a dictionary to the ``base`` package, let's say in a file ``utils.py``::
 
-```
-deprecated_templates = {
-    "base.original.pt": "base.new.pt",
-}
-```
+  deprecated_templates = {
+      "base.original.pt": "base.new.pt",
+  }
 
-In your ``configure.zcml`` you add:
+In your ``configure.zcml`` you add::
 
-```
-<configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
-    >
-...
-  <configure zcml:condition="have jbot-deprecations">
-    <include package="z3c.jbot" file="meta.zcml" />
-    <jbot:jbotDeprecated dictionary=".utils.deprecated_templates">
+  <configure
+      xmlns="http://namespaces.zope.org/zope"
+      xmlns:zcml="http://namespaces.zope.org/zcml"
+      >
+  ...
+    <configure zcml:condition="have jbot-deprecations">
+      <include package="z3c.jbot" file="meta.zcml" />
+      <jbot:jbotDeprecated dictionary=".utils.deprecated_templates">
+    </configure>
   </configure>
-</configure>
-```
 
 TODO: check if I have this correct.  I think we need to define xmlns:jbot.
 
