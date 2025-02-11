@@ -79,11 +79,9 @@ In your ``configure.zcml`` you add::
   ...
     <configure zcml:condition="have jbot-deprecations">
       <include package="z3c.jbot" file="meta.zcml" />
-      <jbot:jbotDeprecated dictionary=".utils.deprecated_templates">
+      <browser:jbotDeprecated dictionary=".utils.deprecated_templates" />
     </configure>
   </configure>
-
-TODO: check if I have this correct.  I think we need to define xmlns:jbot.
 
 The result is:
 
