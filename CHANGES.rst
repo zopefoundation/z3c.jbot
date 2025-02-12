@@ -1,7 +1,13 @@
 Changes
 =======
 
-2.2 (unreleased)
+2.3 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+2.2 (2025-02-12)
 ----------------
 
 - skins scripts/templates now cached using filesystem path as key to prevent
