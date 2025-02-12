@@ -4,14 +4,11 @@ Changes
 2.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- skins scripts/templates now cached using filesystem path as key to prevent
+   memory leak of requests [djay]
 
 2.2 (2025-02-12)
 ----------------
-
-- skins scripts/templates now cached using filesystem path as key to prevent
-   memory leak of requests [djay]
 
 - Add ``jbotDeprecated`` directive with ``dictionary`` as single argument.
   This can be used when you move templates and want an existing jbot
