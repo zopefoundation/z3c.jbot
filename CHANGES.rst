@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.2 (unreleased)
+2.2 (2025-02-12)
 ----------------
 
 - Add ``jbotDeprecated`` directive with ``dictionary`` as single argument.
