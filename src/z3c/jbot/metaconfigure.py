@@ -2,6 +2,8 @@ from zope import component
 from zope import interface
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
+from .manager import update_deprecated_templates_dict
+
 
 try:
     from plone.resource.file import FilesystemFile
@@ -55,8 +57,27 @@ def handler(directory, layer):
 
 
 def templateOverridesDirective(_context, directory, layer=interface.Interface):
+    # All template overrides must be loaded *after* the deprecations from
+    # the deprecatedTemplatesDirective have been loaded, otherwise the
+    # deprecations are not effective.  So set a higher order here.
+    # zope.configuration uses the 'order' key for determining the
+    # order in which it executes any registered actions.
     _context.action(
         discriminator=('jbot', directory, layer),
         callable=handler,
         args=(directory, layer),
+        order=1000,
+    )
+
+
+def deprecatedTemplatesDirective(_context, dictionary):
+    # Discriminators must be hashable.
+    dict_discriminator = "-".join(sorted(dictionary.keys()))
+    _context.action(
+        discriminator=('jbot', dict_discriminator),
+        callable=update_deprecated_templates_dict,
+        args=(dictionary,),
+        # Explicitly set the order just to be clear, although zero is the
+        # default.
+        order=0,
     )
