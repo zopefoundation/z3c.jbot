@@ -4,8 +4,15 @@ Changes
 2.2 (unreleased)
 ----------------
 
-- Drop support for Python 3.8.
+- Add ``jbotDeprecated`` directive with ``dictionary`` as single argument.
+  This can be used when you move templates and want an existing jbot
+  override for the old template path to still work.
+  [maurits]
 
+- Add a ``jbot-deprecations`` ZCML feature to conditionally set deprecations.
+  [ale-rt]
+
+- Drop support for Python 3.8.
 
 2.1 (2024-11-29)
 ----------------
