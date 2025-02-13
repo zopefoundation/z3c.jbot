@@ -128,7 +128,7 @@ else:
 
     def get_skin_obj(obj, view=None, cls=None):
         layer = utility.getLayer()
-        key = layer, obj.filename
+        key = layer, obj.getPhysicalPath()
         inst = registry.get(key)
         if inst is None:
             cls = obj.__class__
