@@ -4,8 +4,8 @@ Changes
 2.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Skins and scripts/templates are now cached using their path as key to prevent
+   memory leak of requests [djay]
 
 2.2 (2025-02-12)
 ----------------
