@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='z3c.jbot',
-    version='3.0',
+    version='3.1.dev0',
     description="Drop-in template overrides.",
     long_description=(open('README.rst').read() + "\n" +
                       open('CHANGES.rst').read()),
