@@ -4,7 +4,8 @@ Changes
 3.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Drop support for deprecated ``z3c.autoinclude`` by removing the entry point.
+  [icemac]
 
 
 3.0 (2025-04-14)
