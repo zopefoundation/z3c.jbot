@@ -1,7 +1,7 @@
 Changes
 =======
 
-3.1 (unreleased)
+3.1 (2025-07-29)
 ----------------
 
 - Skins and scripts/templates are now cached using their path as key to prevent
