@@ -4,8 +4,8 @@ Changes
 3.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Skins and scripts/templates are now cached using their path as key to prevent
+   memory leak of requests [djay]
 
 3.0 (2025-04-14)
 ----------------
